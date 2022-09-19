@@ -1,0 +1,38 @@
+<!-- Example of planning with MoveIt2 and executing motions on the real robot -->
+<launch>
+  <!-- Port that is used for the connection with ArbotiX controller -->
+  <arg name="port" default="/dev/ttyUSB0"/>
+  <!-- Name of the robot -->
+  <arg name="name" default="phantomx_pincher"/>
+  <!-- Prefix for all robot entities (if modified, then joint names in the configuration of controllers must also be updated) -->
+  <arg name="prefix" default="$(arg name)_"/>
+  <!-- Path to configuration for RViz -->
+  <arg name="rviz_config" default="$(find phantomx_pincher_moveit_config)/rviz/moveit.rviz"/>
+
+  <!-- Use real time -->
+  <param name="use_sim_time" value="false"/>
+
+  <!-- Generate URDF description for the robot and store as a parameter -->
+  <param name="robot_description" command="xacro name:=$(arg name) prefix:=$(arg prefix) ros_control:=false mimic_finger_joints:=true '$(find phantomx_pincher_description)/urdf/phantomx_pincher.urdf.xacro'"/>
+
+  <!-- Run the driver for the real robot -->
+  <include file="$(find phantomx_pincher_control)/launch/driver.launch">
+    <arg name="port" value="$(arg port)"/>
+  </include>
+
+  <!-- Launch move_group of MoveIt to enable motion planning -->
+  <arg name="pipeline" default="ompl"/>
+  <include file="$(find phantomx_pincher_moveit_config)/launch/move_group.launch">
+    <arg name="pipeline" value="$(arg pipeline)"/>
+    <arg name="allow_trajectory_execution" value="true"/>
+    <arg name="moveit_manage_controllers" value="false"/>
+    <arg name="moveit_controller_manager" value="simple"/>
+    <arg name="info" value="true"/>
+  </include>
+
+  <!-- Run Rviz -->
+  <arg name="use_rviz" default="true"/>
+  <include file="$(find phantomx_pincher_moveit_config)/launch/moveit_rviz.launch" if="$(arg use_rviz)">
+    <arg name="rviz_config" value="$(arg rviz_config)"/>
+  </include>
+</launch>

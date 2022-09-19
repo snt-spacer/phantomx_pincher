@@ -1,0 +1,42 @@
+<!-- Example of planning with MoveIt and executing motions using fake ROS controllers within RViz -->
+<launch>
+  <!-- Name of the robot -->
+  <arg name="name" default="phantomx_pincher"/>
+  <!-- Prefix for all robot entities (if modified, then joint names in the configuration of controllers must also be updated) -->
+  <arg name="prefix" default="$(arg name)_"/>
+  <!-- Flag to enable mimicking of the finger joints -->
+  <arg name="mimic_finger_joints" default="true"/>
+  <!-- Path to configuration for RViz -->
+  <arg name="rviz_config" default="$(find phantomx_pincher_moveit_config)/rviz/moveit.rviz"/>
+
+  <!-- Use real time -->
+  <param name="use_sim_time" value="false"/>
+
+  <!-- Generate URDF description for the robot and store as a parameter -->
+  <param name="robot_description" command="xacro name:=$(arg name) prefix:=$(arg prefix) ros_control:=false mimic_finger_joints:=$(arg mimic_finger_joints) '$(find phantomx_pincher_description)/urdf/phantomx_pincher.urdf.xacro'"/>
+
+  <!-- Publish fake joints states -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <rosparam param="source_list">[move_group/fake_controller_joint_states]</rosparam>
+  </node>
+  <!-- Publish tf frames of the robot based on the current joint states -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true"/>
+
+  <!-- Launch move_group of MoveIt to enable motion planning -->
+  <arg name="pipeline" default="ompl"/>
+  <arg name="fake_execution_type" default="interpolate"/>
+  <include file="$(find phantomx_pincher_moveit_config)/launch/move_group.launch">
+    <arg name="pipeline" value="$(arg pipeline)"/>
+    <arg name="allow_trajectory_execution" value="true"/>
+    <arg name="moveit_manage_controllers" value="true"/>
+    <arg name="moveit_controller_manager" value="fake"/>
+    <arg name="fake_execution_type" value="$(arg fake_execution_type)"/>
+    <arg name="info" value="true"/>
+  </include>
+
+  <!-- Run Rviz -->
+  <arg name="use_rviz" default="true"/>
+  <include file="$(find phantomx_pincher_moveit_config)/launch/moveit_rviz.launch" if="$(arg use_rviz)">
+    <arg name="rviz_config" value="$(arg rviz_config)"/>
+  </include>
+</launch>
