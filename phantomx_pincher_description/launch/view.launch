@@ -1,0 +1,26 @@
+<!-- Visualisation of URDF model for phantomx_pincher in RViz -->
+<launch>
+  <!-- Name of the robot -->
+  <arg name="name" default="phantomx_pincher"/>
+  <!-- Prefix for all robot entities (if modified, then joint names in the configuration of controllers must also be updated) -->
+  <arg name="prefix" default="$(arg name)_"/>
+  <!-- Flag to enable collision geometry -->
+  <arg name="collision" default="true"/>
+  <!-- Flag to enable mimicking of the finger joints -->
+  <arg name="mimic_finger_joints" default="true"/>
+  <!-- Path to configuration for RViz -->
+  <arg name="rviz_config" default="$(find phantomx_pincher_description)/rviz/view.rviz"/>
+
+  <!-- Use real time -->
+  <param name="use_sim_time" value="false"/>
+
+  <!-- Generate URDF description for the robot and store as a parameter -->
+  <param name="robot_description" command="xacro name:=$(arg name) prefix:=$(arg prefix) collision:=$(arg collision) mimic_finger_joints:=$(arg mimic_finger_joints) '$(find phantomx_pincher_description)/urdf/phantomx_pincher.urdf.xacro'"/>
+
+  <!-- Publish tf frames of the robot based on the current joint states -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+  <!-- Start RViZ -->
+  <node name="$(anon rviz)" pkg="rviz" type="rviz" args="-d $(arg rviz_config)"/>
+  <!-- Open GUI that enables publishing the joint positions -->
+  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui"/>
+</launch>

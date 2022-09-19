@@ -1,0 +1,31 @@
+<!-- Visualisation of SDF model for phantomx_pincher in Gazebo -->
+<launch>
+  <!-- Name or filepath of the Gazebo world to load -->
+  <arg name="world" default="default.sdf"/>
+  <!-- Name of the robot -->
+  <arg name="name" default="phantomx_pincher"/>
+  <!-- Prefix for all robot entities (if modified, then joint names in the configuration of controllers must also be updated) -->
+  <arg name="prefix" default="$(arg name)_"/>
+  <!-- Flag to enable collision geometry -->
+  <arg name="collision" default="true"/>
+  <!-- Flag to enable mimicking of the finger joints -->
+  <arg name="mimic_finger_joints" default="false"/>
+  <!-- Flag to preserve fixed joints and prevent lumping when generating SDF for Gazebo -->
+  <arg name="gazebo_preserve_fixed_joint" default="false"/>
+
+  <!-- Use simulated time -->
+  <param name="use_sim_time" value="true"/>
+  <!-- ros_ign_bridge (clock -> ROS) -->
+  <node name="$(anon ros_ign_bridge)" pkg="ros_ign_bridge" type="parameter_bridge" args="/clock@rosgraph_msgs/Clock[ignition.msgs.Clock"/>
+
+  <!-- Generate SDF descriptions for the robot from xacro -->
+  <node name="xacro2sdf" pkg="phantomx_pincher_description" type="xacro2sdf.bash" args="name:=$(arg name) prefix:=$(arg prefix) collision:=$(arg collision) ros_control:=false mimic_finger_joints:=$(arg mimic_finger_joints) gazebo_preserve_fixed_joint:=$(arg gazebo_preserve_fixed_joint)"/>
+
+  <!-- Start Gazebo -->
+  <include file="$(find ros_ign_gazebo)/launch/ign_gazebo.launch">
+    <arg name="ign_args" value="$(arg world) -r -v 1"/>
+  </include>
+  <!-- Insert SDF model of the robot -->
+  <arg name="world_name" default="$(eval str(arg('world')).split('.')[0])"/>
+  <node name="$(anon ros_ign_gazebo_create)" pkg="ros_ign_gazebo" type="create" args="-world $(arg world_name) -file $(find phantomx_pincher_description)/phantomx_pincher/model.sdf" launch-prefix="bash -c 'sleep 1; $0 $@' "/>
+</launch>

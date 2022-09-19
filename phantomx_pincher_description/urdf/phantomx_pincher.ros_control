@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+<!-- Macros that add ros control for PhantomX Pincher Robot Arm -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!--       -->
+  <!-- Macro -->
+  <!--       -->
+  <xacro:macro name="ros_control_phantomx_pincher" params="
+   prefix
+   command_interface:=position
+  ">
+    <transmission name="${prefix}arm_shoulder_pan_transmission">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}arm_shoulder_pan_joint">
+        <xacro:if value="${'position' in command_interface}">
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'velocity' in command_interface}">
+          <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'effort' in command_interface}">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </xacro:if>
+      </joint>
+      <actuator name="${prefix}arm_shoulder_pan_actuator">
+        <xacro:if value="${'position' in command_interface}">
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'velocity' in command_interface}">
+          <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'effort' in command_interface}">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </xacro:if>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+    <transmission name="${prefix}arm_shoulder_lift_transmission">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}arm_shoulder_lift_joint">
+        <xacro:if value="${'position' in command_interface}">
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'velocity' in command_interface}">
+          <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'effort' in command_interface}">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </xacro:if>
+      </joint>
+      <actuator name="${prefix}arm_shoulder_lift_actuator">
+        <xacro:if value="${'position' in command_interface}">
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'velocity' in command_interface}">
+          <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'effort' in command_interface}">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </xacro:if>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+    <transmission name="${prefix}arm_elbow_flex_transmission">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}arm_elbow_flex_joint">
+        <xacro:if value="${'position' in command_interface}">
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'velocity' in command_interface}">
+          <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'effort' in command_interface}">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </xacro:if>
+      </joint>
+      <actuator name="${prefix}arm_elbow_flex_actuator">
+        <xacro:if value="${'position' in command_interface}">
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'velocity' in command_interface}">
+          <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'effort' in command_interface}">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </xacro:if>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+    <transmission name="${prefix}arm_wrist_flex_transmission">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}arm_wrist_flex_joint">
+        <xacro:if value="${'position' in command_interface}">
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'velocity' in command_interface}">
+          <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'effort' in command_interface}">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </xacro:if>
+      </joint>
+      <actuator name="${prefix}arm_wrist_flex_actuator">
+        <xacro:if value="${'position' in command_interface}">
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'velocity' in command_interface}">
+          <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'effort' in command_interface}">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </xacro:if>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+    <transmission name="${prefix}gripper_finger1_transmission">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}gripper_finger1_joint">
+        <xacro:if value="${'position' in command_interface}">
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'velocity' in command_interface}">
+          <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'effort' in command_interface}">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </xacro:if>
+      </joint>
+      <actuator name="${prefix}gripper_finger1_actuator">
+        <xacro:if value="${'position' in command_interface}">
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'velocity' in command_interface}">
+          <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'effort' in command_interface}">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </xacro:if>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+    <transmission name="${prefix}gripper_finger2_transmission">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}gripper_finger2_joint">
+        <xacro:if value="${'position' in command_interface}">
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'velocity' in command_interface}">
+          <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'effort' in command_interface}">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </xacro:if>
+      </joint>
+      <actuator name="${prefix}gripper_finger2_actuator">
+        <xacro:if value="${'position' in command_interface}">
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'velocity' in command_interface}">
+          <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${'effort' in command_interface}">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </xacro:if>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+  </xacro:macro>
+</robot>

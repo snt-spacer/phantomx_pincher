@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- Macros that add Ignition Gazebo plugins for PhantomX Pincher Robot Arm -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!--       -->
+  <!-- Macro -->
+  <!--       -->
+  <xacro:macro name="ign_ros_control">
+    <gazebo>
+      <plugin filename="ign_ros_control_plugin" name="ign_ros_control::IgnitionROSControlPlugin">
+        <robotNamespace></robotNamespace>
+        <robotParam>robot_description</robotParam>
+        <robotSimType>ign_ros_control/IgnitionSystem</robotSimType>
+        <updateRate>200</updateRate>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+</robot>
