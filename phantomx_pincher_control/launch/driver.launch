@@ -1,0 +1,19 @@
+<!-- Launch a driver for the ArbotiX controller with support for gripper via GripperCommandAction -->
+<launch>
+  <!-- Port that is used for the connection with ArbotiX controller -->
+  <arg name="port" default="/dev/ttyUSB0"/>
+
+  <!-- Run the ArbotiX driver -->
+  <node name="arbotix_driver" pkg="arbotix_python" type="arbotix_driver" clear_params="true">
+    <rosparam command="load" file="$(find phantomx_pincher_control)/config/phantomx_pincher.yaml"/>
+    <param name="port" value="$(arg port)"/>
+  </node>
+  <!-- Run a GripperCommandAction server for control of the gripper -->
+  <node name="gripper_action_controller" pkg="phantomx_pincher_control" type="gripper_action_controller.py" clear_params="true">
+    <rosparam command="load" file="$(find phantomx_pincher_control)/config/gripper_action_controller.yaml"/>
+  </node>
+  <!-- Run a transmission for the gripper to republish topics between the actual joint and fingers -->
+  <node name="gripper_transmission" pkg="phantomx_pincher_control" type="gripper_transmission.py">
+    <rosparam command="load" file="$(find phantomx_pincher_control)/config/gripper_transmission.yaml"/>
+  </node>
+</launch>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>phantomx_pincher_control</name>
+  <version>1.0.0</version>
+  <description>Control of PhantomX Pincher Robot Arm</description>
+  <maintainer email="andrej.orsula@uni.lu">Andrej Orsula</maintainer>
+  <author>Andrej Orsula</author>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>actionlib</exec_depend>
+  <exec_depend>arbotix_controllers</exec_depend>
+  <exec_depend>arbotix_python</exec_depend>
+  <exec_depend>control_msgs</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>xacro</exec_depend>
+</package>

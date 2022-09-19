@@ -1,0 +1,8 @@
+source_joint: phantomx_pincher_gripper_joint
+target_joint: phantomx_pincher_gripper_finger1_joint
+mimic_joint: phantomx_pincher_gripper_finger2_joint
+radius: 0.0078
+connector: 0.024
+offset: 0.016
+min_width: 0.0
+max_width: 0.0158
