@@ -1,5 +1,7 @@
 # Colcon
 **/build
+**/devel
+**/logs
 
 # Python
 **/__pycache__
