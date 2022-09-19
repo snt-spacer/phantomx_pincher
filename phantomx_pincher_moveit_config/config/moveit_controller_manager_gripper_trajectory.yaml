@@ -1,0 +1,21 @@
+controller_names:
+  - joint_trajectory_controller
+  - gripper_trajectory_controller
+
+joint_trajectory_controller:
+  action_ns: follow_joint_trajectory
+  type: FollowJointTrajectory
+  default: true
+  joints:
+    - phantomx_pincher_arm_shoulder_pan_joint
+    - phantomx_pincher_arm_shoulder_lift_joint
+    - phantomx_pincher_arm_elbow_flex_joint
+    - phantomx_pincher_arm_wrist_flex_joint
+
+gripper_trajectory_controller:
+  action_ns: follow_joint_trajectory
+  type: FollowJointTrajectory
+  default: true
+  joints:
+    - phantomx_pincher_gripper_finger1_joint
+    - phantomx_pincher_gripper_finger2_joint

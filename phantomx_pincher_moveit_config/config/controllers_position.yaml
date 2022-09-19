@@ -1,0 +1,36 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 250
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    gripper_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - phantomx_pincher_arm_shoulder_pan_joint
+      - phantomx_pincher_arm_shoulder_lift_joint
+      - phantomx_pincher_arm_elbow_flex_joint
+      - phantomx_pincher_arm_wrist_flex_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+
+gripper_trajectory_controller:
+  ros__parameters:
+    joints:
+      - phantomx_pincher_gripper_finger1_joint
+      - phantomx_pincher_gripper_finger2_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
