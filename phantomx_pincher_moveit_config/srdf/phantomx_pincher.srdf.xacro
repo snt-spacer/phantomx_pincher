@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!-- SRDF for PhantomX Pincher Robot Arm -->
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="$(arg name)">
+
+  <!--                   -->
+  <!-- Imported elements -->
+  <!--                   -->
+  <xacro:include filename="$(find phantomx_pincher_moveit_config)/srdf/phantomx_pincher.xacro"/>
+
+
+  <!--            -->
+  <!-- Parameters -->
+  <!--            -->
+  <!-- Name of the robot (mandatory) -->
+  <xacro:arg name="name" default="phantomx_pincher"/>
+  <!-- Prefix for all entities -->
+  <xacro:arg name="prefix" default="$(arg name)_"/>
+
+
+  <!--       -->
+  <!-- Robot -->
+  <!--       -->
+  <xacro:phantomx_pincher prefix="$(arg prefix)"/>
+
+</robot>

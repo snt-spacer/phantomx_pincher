@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Macro for SRDF of PhantomX Pincher Robot Arm -->
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <!--       -->
+  <!-- Macro -->
+  <!--       -->
+  <xacro:macro name="phantomx_pincher" params="prefix:=${prefix}">
+
+    <group name="arm">
+      <chain base_link="${prefix}base_link" tip_link="${prefix}end_effector"/>
+    </group>
+    <group name="gripper">
+      <joint name="${prefix}gripper_finger1_joint"/>
+      <joint name="${prefix}gripper_finger2_joint"/>
+    </group>
+
+    <end_effector name="${prefix}end_effector" parent_link="${prefix}gripper_finger_base_link" group="gripper" parent_group="arm"/>
+
+    <virtual_joint name="${prefix}base_link_joint" type="fixed" parent_frame="world" child_link="${prefix}base_link"/>
+
+    <passive_joint name="${prefix}gripper_joint"/>
+
+    <group_state group="arm" name="up">
+      <joint name="${prefix}arm_shoulder_pan_joint" value="0.0"/>
+      <joint name="${prefix}arm_shoulder_lift_joint" value="0.0"/>
+      <joint name="${prefix}arm_elbow_flex_joint" value="0.0"/>
+      <joint name="${prefix}arm_wrist_flex_joint" value="0.0"/>
+    </group_state>
+    <group_state group="arm" name="rest">
+      <joint name="${prefix}arm_shoulder_pan_joint" value="0.0"/>
+      <joint name="${prefix}arm_shoulder_lift_joint" value="${-pi/2}"/>
+      <joint name="${prefix}arm_elbow_flex_joint" value="${130*pi/180}"/>
+      <joint name="${prefix}arm_wrist_flex_joint" value="${pi/2}"/>
+    </group_state>
+    <group_state group="arm" name="ready_near">
+      <joint name="${prefix}arm_shoulder_pan_joint" value="0.0"/>
+      <joint name="${prefix}arm_shoulder_lift_joint" value="0.0"/>
+      <joint name="${prefix}arm_elbow_flex_joint" value="${pi/2}"/>
+      <joint name="${prefix}arm_wrist_flex_joint" value="${pi/2}"/>
+    </group_state>
+    <group_state group="arm" name="ready_mid">
+      <joint name="${prefix}arm_shoulder_pan_joint" value="0.0"/>
+      <joint name="${prefix}arm_shoulder_lift_joint" value="${20*pi/180}"/>
+      <joint name="${prefix}arm_elbow_flex_joint" value="${pi/2}"/>
+      <joint name="${prefix}arm_wrist_flex_joint" value="${70*pi/180}"/>
+    </group_state>
+    <group_state group="arm" name="ready_far">
+      <joint name="${prefix}arm_shoulder_pan_joint" value="0.0"/>
+      <joint name="${prefix}arm_shoulder_lift_joint" value="${pi/2}"/>
+      <joint name="${prefix}arm_elbow_flex_joint" value="0.0"/>
+      <joint name="${prefix}arm_wrist_flex_joint" value="${pi/2}"/>
+    </group_state>
+
+    <group_state group="gripper" name="open">
+      <joint name="${prefix}gripper_finger1_joint" value="0.0158"/>
+      <joint name="${prefix}gripper_finger2_joint" value="0.0158"/>
+    </group_state>
+    <group_state group="gripper" name="closed">
+      <joint name="${prefix}gripper_finger1_joint" value="0.001"/>
+      <joint name="${prefix}gripper_finger2_joint" value="0.001"/>
+    </group_state>
+
+    <disable_collisions link1="${prefix}arm_elbow_F10_0_link" link2="${prefix}arm_elbow_F10_1_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_0_link" link2="${prefix}arm_elbow_F10_2_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_0_link" link2="${prefix}arm_elbow_F3_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_0_link" link2="${prefix}arm_elbow_flex_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_0_link" link2="${prefix}arm_elbow_flex_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_0_link" link2="${prefix}arm_shoulder_F10_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_0_link" link2="${prefix}arm_shoulder_F10_1_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_0_link" link2="${prefix}arm_shoulder_F10_2_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_0_link" link2="${prefix}arm_shoulder_F3_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_0_link" link2="${prefix}arm_shoulder_lift_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_0_link" link2="${prefix}arm_shoulder_lift_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_0_link" link2="${prefix}arm_shoulder_pan_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_0_link" link2="${prefix}arm_wrist_F3_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_0_link" link2="${prefix}arm_wrist_flex_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_0_link" link2="${prefix}arm_wrist_flex_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_0_link" link2="${prefix}gripper_finger1_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_0_link" link2="${prefix}gripper_finger2_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_0_link" link2="${prefix}gripper_finger_base_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_0_link" link2="${prefix}gripper_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_0_link" link2="${prefix}task_board_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_0_link" link2="${prefix}task_board_mount_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_1_link" link2="${prefix}arm_elbow_F10_2_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_1_link" link2="${prefix}arm_elbow_F3_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_1_link" link2="${prefix}arm_elbow_flex_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_1_link" link2="${prefix}arm_elbow_flex_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_1_link" link2="${prefix}arm_shoulder_F10_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_1_link" link2="${prefix}arm_shoulder_F10_1_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_1_link" link2="${prefix}arm_shoulder_F10_2_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_1_link" link2="${prefix}arm_shoulder_F3_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_1_link" link2="${prefix}arm_shoulder_lift_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_1_link" link2="${prefix}arm_shoulder_lift_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_1_link" link2="${prefix}arm_shoulder_pan_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_1_link" link2="${prefix}arm_wrist_F3_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_1_link" link2="${prefix}arm_wrist_flex_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_1_link" link2="${prefix}arm_wrist_flex_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_1_link" link2="${prefix}gripper_finger1_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_1_link" link2="${prefix}gripper_finger2_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_1_link" link2="${prefix}gripper_finger_base_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_1_link" link2="${prefix}gripper_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_1_link" link2="${prefix}task_board_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_1_link" link2="${prefix}task_board_mount_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_2_link" link2="${prefix}arm_elbow_F3_0_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_2_link" link2="${prefix}arm_elbow_flex_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_2_link" link2="${prefix}arm_elbow_flex_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_2_link" link2="${prefix}arm_shoulder_F10_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_2_link" link2="${prefix}arm_shoulder_F10_1_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_2_link" link2="${prefix}arm_shoulder_F10_2_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_2_link" link2="${prefix}arm_shoulder_F3_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_2_link" link2="${prefix}arm_shoulder_lift_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_2_link" link2="${prefix}arm_shoulder_lift_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_2_link" link2="${prefix}arm_shoulder_pan_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_2_link" link2="${prefix}arm_wrist_F3_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_2_link" link2="${prefix}arm_wrist_flex_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_2_link" link2="${prefix}arm_wrist_flex_servo_link" reason="Default"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_2_link" link2="${prefix}gripper_finger1_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_2_link" link2="${prefix}gripper_finger2_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_2_link" link2="${prefix}gripper_finger_base_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_2_link" link2="${prefix}gripper_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_2_link" link2="${prefix}task_board_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F10_2_link" link2="${prefix}task_board_mount_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F3_0_link" link2="${prefix}arm_elbow_flex_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F3_0_link" link2="${prefix}arm_elbow_flex_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F3_0_link" link2="${prefix}arm_shoulder_F10_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F3_0_link" link2="${prefix}arm_shoulder_F10_1_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F3_0_link" link2="${prefix}arm_shoulder_F10_2_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F3_0_link" link2="${prefix}arm_shoulder_F3_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F3_0_link" link2="${prefix}arm_shoulder_lift_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F3_0_link" link2="${prefix}arm_shoulder_lift_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F3_0_link" link2="${prefix}arm_shoulder_pan_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F3_0_link" link2="${prefix}arm_wrist_F3_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F3_0_link" link2="${prefix}arm_wrist_flex_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F3_0_link" link2="${prefix}arm_wrist_flex_servo_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}arm_elbow_F3_0_link" link2="${prefix}gripper_finger1_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F3_0_link" link2="${prefix}gripper_finger2_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F3_0_link" link2="${prefix}gripper_finger_base_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_F3_0_link" link2="${prefix}gripper_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_link" link2="${prefix}arm_elbow_flex_servo_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_link" link2="${prefix}arm_shoulder_F10_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_link" link2="${prefix}arm_shoulder_F10_1_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_link" link2="${prefix}arm_shoulder_F10_2_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_link" link2="${prefix}arm_shoulder_F3_0_link" reason="User"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_link" link2="${prefix}arm_shoulder_lift_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_link" link2="${prefix}arm_shoulder_lift_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_link" link2="${prefix}arm_shoulder_pan_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_link" link2="${prefix}arm_wrist_F3_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_link" link2="${prefix}arm_wrist_flex_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_link" link2="${prefix}arm_wrist_flex_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_link" link2="${prefix}gripper_finger1_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_link" link2="${prefix}gripper_finger2_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_link" link2="${prefix}gripper_finger_base_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_link" link2="${prefix}gripper_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_link" link2="${prefix}task_board_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_link" link2="${prefix}task_board_mount_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_servo_link" link2="${prefix}arm_shoulder_F10_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_servo_link" link2="${prefix}arm_shoulder_F10_1_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_servo_link" link2="${prefix}arm_shoulder_F10_2_link" reason="Default"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_servo_link" link2="${prefix}arm_shoulder_F3_0_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_servo_link" link2="${prefix}arm_shoulder_lift_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_servo_link" link2="${prefix}arm_shoulder_lift_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_servo_link" link2="${prefix}arm_shoulder_pan_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_servo_link" link2="${prefix}arm_shoulder_pan_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_servo_link" link2="${prefix}arm_wrist_F3_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_servo_link" link2="${prefix}arm_wrist_flex_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_servo_link" link2="${prefix}arm_wrist_flex_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_servo_link" link2="${prefix}base_mount_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_servo_link" link2="${prefix}gripper_finger1_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_servo_link" link2="${prefix}gripper_finger2_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_servo_link" link2="${prefix}gripper_finger_base_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_servo_link" link2="${prefix}gripper_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_servo_link" link2="${prefix}task_board_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_elbow_flex_servo_link" link2="${prefix}task_board_mount_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_0_link" link2="${prefix}arm_shoulder_F10_1_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_0_link" link2="${prefix}arm_shoulder_F10_2_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_0_link" link2="${prefix}arm_shoulder_F3_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_0_link" link2="${prefix}arm_shoulder_lift_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_0_link" link2="${prefix}arm_shoulder_lift_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_0_link" link2="${prefix}arm_shoulder_pan_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_0_link" link2="${prefix}arm_shoulder_pan_servo_link" reason="User"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_0_link" link2="${prefix}arm_wrist_F3_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_0_link" link2="${prefix}arm_wrist_flex_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_0_link" link2="${prefix}arm_wrist_flex_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_0_link" link2="${prefix}base_mount_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_0_link" link2="${prefix}gripper_finger1_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_0_link" link2="${prefix}gripper_finger2_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_0_link" link2="${prefix}gripper_finger_base_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_0_link" link2="${prefix}gripper_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_0_link" link2="${prefix}task_board_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_0_link" link2="${prefix}task_board_mount_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_1_link" link2="${prefix}arm_shoulder_F10_2_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_1_link" link2="${prefix}arm_shoulder_F3_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_1_link" link2="${prefix}arm_shoulder_lift_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_1_link" link2="${prefix}arm_shoulder_lift_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_1_link" link2="${prefix}arm_shoulder_pan_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_1_link" link2="${prefix}arm_shoulder_pan_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_1_link" link2="${prefix}arm_wrist_F3_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_1_link" link2="${prefix}arm_wrist_flex_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_1_link" link2="${prefix}arm_wrist_flex_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_1_link" link2="${prefix}base_mount_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_1_link" link2="${prefix}gripper_finger1_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_1_link" link2="${prefix}gripper_finger2_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_1_link" link2="${prefix}gripper_finger_base_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_1_link" link2="${prefix}gripper_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_1_link" link2="${prefix}task_board_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_1_link" link2="${prefix}task_board_mount_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_2_link" link2="${prefix}arm_shoulder_F3_0_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_2_link" link2="${prefix}arm_shoulder_lift_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_2_link" link2="${prefix}arm_shoulder_lift_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_2_link" link2="${prefix}arm_shoulder_pan_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_2_link" link2="${prefix}arm_shoulder_pan_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_2_link" link2="${prefix}arm_wrist_F3_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_2_link" link2="${prefix}arm_wrist_flex_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_2_link" link2="${prefix}arm_wrist_flex_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_2_link" link2="${prefix}base_mount_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_2_link" link2="${prefix}gripper_finger1_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_2_link" link2="${prefix}gripper_finger2_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_2_link" link2="${prefix}gripper_finger_base_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_2_link" link2="${prefix}gripper_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_2_link" link2="${prefix}task_board_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F10_2_link" link2="${prefix}task_board_mount_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F3_0_link" link2="${prefix}arm_shoulder_lift_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F3_0_link" link2="${prefix}arm_shoulder_lift_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F3_0_link" link2="${prefix}arm_shoulder_pan_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F3_0_link" link2="${prefix}arm_shoulder_pan_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F3_0_link" link2="${prefix}arm_wrist_F3_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F3_0_link" link2="${prefix}arm_wrist_flex_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F3_0_link" link2="${prefix}arm_wrist_flex_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F3_0_link" link2="${prefix}base_mount_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F3_0_link" link2="${prefix}gripper_finger1_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F3_0_link" link2="${prefix}gripper_finger2_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F3_0_link" link2="${prefix}gripper_finger_base_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F3_0_link" link2="${prefix}gripper_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F3_0_link" link2="${prefix}task_board_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_F3_0_link" link2="${prefix}task_board_mount_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_lift_link" link2="${prefix}arm_shoulder_lift_servo_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}arm_shoulder_lift_link" link2="${prefix}arm_shoulder_pan_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_lift_link" link2="${prefix}arm_shoulder_pan_servo_link" reason="User"/>
+    <disable_collisions link1="${prefix}arm_shoulder_lift_link" link2="${prefix}arm_wrist_F3_0_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_lift_link" link2="${prefix}arm_wrist_flex_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_lift_link" link2="${prefix}arm_wrist_flex_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_lift_link" link2="${prefix}base_mount_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_lift_link" link2="${prefix}task_board_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_lift_link" link2="${prefix}task_board_mount_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_lift_servo_link" link2="${prefix}arm_shoulder_pan_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}arm_shoulder_lift_servo_link" link2="${prefix}arm_shoulder_pan_servo_link" reason="Default"/>
+    <disable_collisions link1="${prefix}arm_shoulder_lift_servo_link" link2="${prefix}arm_wrist_flex_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_lift_servo_link" link2="${prefix}arm_wrist_flex_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_lift_servo_link" link2="${prefix}base_mount_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_lift_servo_link" link2="${prefix}task_board_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_lift_servo_link" link2="${prefix}task_board_mount_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_pan_link" link2="${prefix}arm_shoulder_pan_servo_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}arm_shoulder_pan_link" link2="${prefix}arm_wrist_flex_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_pan_link" link2="${prefix}arm_wrist_flex_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_pan_link" link2="${prefix}base_mount_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_pan_link" link2="${prefix}task_board_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_pan_link" link2="${prefix}task_board_mount_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_pan_servo_link" link2="${prefix}base_mount_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}arm_shoulder_pan_servo_link" link2="${prefix}task_board_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_shoulder_pan_servo_link" link2="${prefix}task_board_mount_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_wrist_F3_0_link" link2="${prefix}arm_wrist_flex_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}arm_wrist_F3_0_link" link2="${prefix}arm_wrist_flex_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_wrist_F3_0_link" link2="${prefix}gripper_finger1_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_wrist_F3_0_link" link2="${prefix}gripper_finger2_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_wrist_F3_0_link" link2="${prefix}gripper_finger_base_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_wrist_F3_0_link" link2="${prefix}gripper_servo_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}arm_wrist_flex_link" link2="${prefix}arm_wrist_flex_servo_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}arm_wrist_flex_link" link2="${prefix}gripper_finger1_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_wrist_flex_link" link2="${prefix}gripper_finger2_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_wrist_flex_link" link2="${prefix}gripper_finger_base_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_wrist_flex_link" link2="${prefix}gripper_servo_link" reason="User"/>
+    <disable_collisions link1="${prefix}arm_wrist_flex_servo_link" link2="${prefix}gripper_finger1_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_wrist_flex_servo_link" link2="${prefix}gripper_finger2_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_wrist_flex_servo_link" link2="${prefix}gripper_finger_base_link" reason="Never"/>
+    <disable_collisions link1="${prefix}arm_wrist_flex_servo_link" link2="${prefix}gripper_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}base_mount_link" link2="${prefix}task_board_link" reason="Never"/>
+    <disable_collisions link1="${prefix}base_mount_link" link2="${prefix}task_board_mount_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}gripper_finger1_link" link2="${prefix}gripper_finger2_link" reason="Never"/>
+    <disable_collisions link1="${prefix}gripper_finger1_link" link2="${prefix}gripper_finger_base_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}gripper_finger1_link" link2="${prefix}gripper_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}gripper_finger2_link" link2="${prefix}gripper_finger_base_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}gripper_finger2_link" link2="${prefix}gripper_servo_link" reason="Never"/>
+    <disable_collisions link1="${prefix}gripper_finger_base_link" link2="${prefix}gripper_servo_link" reason="Adjacent"/>
+    <disable_collisions link1="${prefix}task_board_link" link2="${prefix}task_board_mount_link" reason="Adjacent"/>
+  </xacro:macro>
+</robot>
