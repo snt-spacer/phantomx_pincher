@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>phantomx_pincher</name>
+  <version>1.0.0</version>
+  <description>Metapackage for PhantomX Pincher Robot Arm</description>
+  <maintainer email="andrej.orsula@uni.lu">Andrej Orsula</maintainer>
+  <author>Andrej Orsula</author>
+  <license>BSD</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <build_depend>phantomx_pincher_description</build_depend>
+  <build_depend>phantomx_pincher_moveit_config</build_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
