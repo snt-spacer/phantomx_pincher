@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <asset>
+    <contributor>
+      <author>Andrej Orsula</author>
+      <authoring_tool>Blender 3.2.0 commit date:2022-06-08, commit time:10:22, hash:e05e1e369187</authoring_tool>
+    </contributor>
+    <created>2022-08-05T11:30:00</created>
+    <modified>2022-08-05T11:30:00</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_effects>
+    <effect id="black_plastic-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <lambert>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <diffuse>
+              <color sid="diffuse">0.1 0.1 0.1 1</color>
+            </diffuse>
+            <index_of_refraction>
+              <float sid="ior">1.45</float>
+            </index_of_refraction>
+          </lambert>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_images/>
+  <library_materials>
+    <material id="black_plastic-material" name="black_plastic">
+      <instance_effect url="#black_plastic-effect"/>
+    </material>
+  </library_materials>
+  <library_geometries>
+    <geometry id="finger_mesh" name="finger">
+      <mesh>
+        <source id="finger_mesh-positions">
+          <float_array id="finger_mesh-positions-array" count="48">-0.01239997 0.0115 -0.01840001 -0.01239997 -0.0115 -0.01840001 -0.01239997 0.0115 0.01859998 -0.01239997 -0.0115 0.01859998 0.01159995 0.0115 -0.01840001 0.01159995 -0.0115 -0.01840001 0.01159995 0.0115 -0.01639997 -0.00939995 0.0115 0.01859998 -0.00939995 -0.0115 0.01859998 0.01159995 -0.0115 -0.01639997 -0.00939995 0.009499967 -0.01639997 -0.00939995 0.009499967 0.01859998 0.01159995 0.009499967 -0.01639997 -0.00939995 -0.009499967 -0.01639997 -0.00939995 -0.009499967 0.01859998 0.01159995 -0.009499967 -0.01639997</float_array>
+          <technique_common>
+            <accessor source="#finger_mesh-positions-array" count="16" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="finger_mesh-normals">
+          <float_array id="finger_mesh-normals-array" count="27">0 1 0 1 0 0 -1 0 0 0 -1 0 0 0 -1 0 0 1 0.8574929 0 0.5144959 0 1 0 0 -1 0</float_array>
+          <technique_common>
+            <accessor source="#finger_mesh-normals-array" count="9" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="finger_mesh-vertices">
+          <input semantic="POSITION" source="#finger_mesh-positions"/>
+        </vertices>
+        <triangles material="black_plastic-material" count="24">
+          <input semantic="VERTEX" source="#finger_mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#finger_mesh-normals" offset="1"/>
+          <p>6 0 4 0 0 0 5 1 6 1 9 1 0 2 3 2 2 2 8 3 3 3 1 3 5 4 0 4 4 4 7 5 3 5 8 5 11 1 13 1 10 1 12 3 11 3 10 3 14 0 15 0 13 0 6 6 11 6 12 6 15 5 10 5 13 5 15 6 8 6 9 6 2 0 7 0 0 0 7 7 6 7 0 7 5 1 4 1 6 1 0 2 1 2 3 2 5 3 9 3 1 3 9 8 8 8 1 8 5 4 1 4 0 4 7 5 2 5 3 5 11 1 14 1 13 1 6 6 7 6 11 6 15 5 12 5 10 5 15 6 14 6 8 6</p>
+        </triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="Scene" name="Scene">
+      <node id="pincher_finger" name="pincher_finger" type="NODE">
+        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+        <instance_geometry url="#finger_mesh" name="pincher_finger">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="black_plastic-material" target="#black_plastic-material"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Scene"/>
+  </scene>
+</COLLADA>
