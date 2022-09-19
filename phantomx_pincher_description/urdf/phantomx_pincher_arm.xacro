@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!-- Xacro for PhantomX Pincher Robot Arm arm -->
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!--                   -->
+  <!-- Imported elements -->
+  <!--                   -->
+  <xacro:include filename="$(find phantomx_pincher_description)/urdf/phantomx_pincher_hardware.xacro"/>
+  <xacro:include filename="$(find phantomx_pincher_description)/urdf/phantomx_pincher.ros2_control"/>
+
+
+  <!--            -->
+  <!-- Properties -->
+  <!--            -->
+  <xacro:property name="ax12_height" value="0.032"/>
+  <xacro:property name="ax12_width" value="0.038"/>
+  <xacro:property name="f2_height" value="0.0265"/>
+  <xacro:property name="f4_height" value="0.0525"/>
+  <xacro:property name="f10_height" value="0.004"/>
+  <xacro:property name="finger_centre_offset_x" value="0.019"/>
+  <xacro:property name="finger_centre_offset_y" value="0.0115"/>
+
+  <xacro:property name="joints_velocity_limit" value="${pi/2}"/>
+  <xacro:property name="pan_joint_lower_limit" value="${-150*pi/180}"/>
+  <xacro:property name="pan_joint_upper_limit" value="${150*pi/180}"/>
+  <xacro:property name="shoulder_joint_lower_limit" value="${-120*pi/180}"/>
+  <xacro:property name="shoulder_joint_upper_limit" value="${120*pi/180}"/>
+  <xacro:property name="elbow_joint_lower_limit" value="${-139*pi/180}"/>
+  <xacro:property name="elbow_joint_upper_limit" value="${139*pi/180}"/>
+  <xacro:property name="wrist_joint_lower_limit" value="${-98*pi/180}"/>
+  <xacro:property name="wrist_joint_upper_limit" value="${103*pi/180}"/>
+
+  <!--       -->
+  <!-- Macro -->
+  <!--       -->
+  <xacro:macro name="phantomx_pincher" params="
+    prefix
+    base_link:=base_link
+    collision:=true
+    ros2_control:=true
+    ros2_control_plugin:=fake
+    ros2_control_command_interface:=position
+    mimic_finger_joints:=false
+    gazebo_preserve_fixed_joint:=false
+  ">
+    <!-- Base link of the arm, which can be used to attach it to the rest of the world -->
+    <link name="${prefix}${base_link}"/>
+
+    <!-- Shoulder Pan -->
+    <xacro:dynamixel_ax12_fixed prefix="${prefix}" parent="${base_link}" name="arm_shoulder_pan_servo" joint_origin_xyz="0.0 0.0 0.0" joint_origin_rpy="${pi/2} 0.0 ${pi/2}" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <xacro:bioloid_f3_revolute prefix="${prefix}" parent="arm_shoulder_pan_servo_link" name="arm_shoulder_pan" joint_velocity_limit="${joints_velocity_limit}" joint_lower_limit="${pan_joint_lower_limit}" joint_upper_limit="${pan_joint_upper_limit}" joint_origin_xyz="0 ${ax12_width/2} 0.0" joint_origin_rpy="${-pi/2} ${pi/2} ${pi}" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+
+    <!-- Shoulder Lift -->
+    <xacro:dynamixel_ax12_fixed prefix="${prefix}" parent="arm_shoulder_pan_link" name="arm_shoulder_lift_servo" joint_origin_xyz="0.0 0.0 ${-ax12_height-f10_height+0.001}" joint_origin_rpy="0.0 ${pi} 0.0" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <xacro:bioloid_f4_revolute prefix="${prefix}" parent="arm_shoulder_lift_servo_link" name="arm_shoulder_lift" joint_velocity_limit="${joints_velocity_limit}" joint_lower_limit="${shoulder_joint_lower_limit}" joint_upper_limit="${shoulder_joint_upper_limit}" joint_origin_xyz="0.0 0.0 0.0" joint_origin_rpy="0.0 0.0 0.0" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <xacro:bioloid_f10_fixed prefix="${prefix}" parent="arm_shoulder_lift_link" name="arm_shoulder_F10_0" joint_origin_xyz="0.0 0.0 ${f4_height+f10_height/2}" joint_origin_rpy="0.0 0.0 0.0" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <xacro:bioloid_f10_fixed prefix="${prefix}" parent="arm_shoulder_F10_0_link" name="arm_shoulder_F10_1" joint_origin_xyz="0.0 0.0 ${f10_height}" joint_origin_rpy="0.0 0.0 0.0" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <xacro:bioloid_f10_fixed prefix="${prefix}" parent="arm_shoulder_F10_1_link" name="arm_shoulder_F10_2" joint_origin_xyz="0.0 0.0 ${f10_height}" joint_origin_rpy="0.0 0.0 0.0" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <xacro:bioloid_f3_fixed prefix="${prefix}" parent="arm_shoulder_F10_2_link" name="arm_shoulder_F3_0" joint_origin_xyz="0.0 0.0 ${f10_height/2}" joint_origin_rpy="0.0 ${pi} 0.0" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+
+    <!-- Elbow -->
+    <xacro:dynamixel_ax12_fixed prefix="${prefix}" parent="arm_shoulder_F3_0_link" name="arm_elbow_flex_servo" joint_origin_xyz="0.0 0.0 ${-ax12_height-f10_height+0.001}" joint_origin_rpy="0.0 ${pi} 0.0" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <xacro:bioloid_f4_revolute prefix="${prefix}" parent="arm_elbow_flex_servo_link" name="arm_elbow_flex" joint_velocity_limit="${joints_velocity_limit}" joint_lower_limit="${elbow_joint_lower_limit}" joint_upper_limit="${elbow_joint_upper_limit}" joint_origin_xyz="0.0 0.0 0.0" joint_origin_rpy="0.0 0.0 0.0" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <xacro:bioloid_f10_fixed prefix="${prefix}" parent="arm_elbow_flex_link" name="arm_elbow_F10_0" joint_origin_xyz="0.0 0.0 ${f4_height+f10_height/2}" joint_origin_rpy="0.0 0.0 0.0" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <xacro:bioloid_f10_fixed prefix="${prefix}" parent="arm_elbow_F10_0_link" name="arm_elbow_F10_1" joint_origin_xyz="0.0 0.0 ${f10_height}" joint_origin_rpy="0.0 0.0 0.0" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <xacro:bioloid_f10_fixed prefix="${prefix}" parent="arm_elbow_F10_1_link" name="arm_elbow_F10_2" joint_origin_xyz="0.0 0.0 ${f10_height}" joint_origin_rpy="0.0 0.0 0.0" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <xacro:bioloid_f3_fixed prefix="${prefix}" parent="arm_elbow_F10_2_link" name="arm_elbow_F3_0" joint_origin_xyz="0.0 0.0 ${f10_height/2}" joint_origin_rpy="0.0 ${pi} 0.0" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+
+    <!-- Wrist -->
+    <xacro:dynamixel_ax12_fixed prefix="${prefix}" parent="arm_elbow_F3_0_link" name="arm_wrist_flex_servo" joint_origin_xyz="0.0 0.0 ${-ax12_height-f10_height+0.001}" joint_origin_rpy="0.0 ${pi} 0.0" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <xacro:bioloid_f2_revolute prefix="${prefix}" parent="arm_wrist_flex_servo_link" name="arm_wrist_flex" joint_velocity_limit="${joints_velocity_limit}" joint_lower_limit="${wrist_joint_lower_limit}" joint_upper_limit="${wrist_joint_upper_limit}" joint_origin_xyz="0.0 0.0 0.0" joint_origin_rpy="0.0 0.0 0.0" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <xacro:bioloid_f3_fixed prefix="${prefix}" parent="arm_wrist_flex_link" name="arm_wrist_F3_0" joint_origin_xyz="0.0 0.0 ${f2_height}" joint_origin_rpy="0 ${pi} ${-pi}" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+
+    <!-- Gripper -->
+    <xacro:dynamixel_ax12_fixed prefix="${prefix}" parent="arm_wrist_F3_0_link" name="gripper_servo" joint_origin_xyz="0.0 0.0 ${-ax12_width/2}" joint_origin_rpy="${pi/2} ${pi} ${pi/2}" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <xacro:gripper_finger_base prefix="${prefix}" parent="gripper_servo_link" name="gripper_finger_base" joint_origin_xyz="0 ${ax12_width/2} 0.0" joint_origin_rpy="${pi} 0.0 ${pi/2}" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <xacro:pincher_finger prefix="${prefix}" parent="gripper_finger_base_link" name="gripper_finger1" joint_origin_xyz="${finger_centre_offset_x} ${finger_centre_offset_y} 0.0" joint_origin_rpy="${pi/2} 0.0 ${pi/2}" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <!-- If enabled, mimic finger joints -->
+    <xacro:if value="${mimic_finger_joints}">
+      <xacro:pincher_finger prefix="${prefix}" parent="gripper_finger_base_link" name="gripper_finger2" joint_origin_xyz="${finger_centre_offset_x} ${-finger_centre_offset_y} 0.0" joint_origin_rpy="${pi/2} ${pi} ${pi/2}" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}" mimic_joint="${prefix}gripper_finger1_joint"/>
+    </xacro:if>
+    <xacro:unless value="${mimic_finger_joints}">
+      <xacro:pincher_finger prefix="${prefix}" parent="gripper_finger_base_link" name="gripper_finger2" joint_origin_xyz="${finger_centre_offset_x} ${-finger_centre_offset_y} 0.0" joint_origin_rpy="${pi/2} ${pi} ${pi/2}" collision="${collision}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    </xacro:unless>
+
+    <!-- Active joint for the gripper (only required for the real robot) -->
+    <xacro:if value="${ros2_control}">
+      <xacro:if value="${'real' in '$(arg ros2_control_plugin)'}">
+        <xacro:fake_active_gripper_joint prefix="${prefix}" parent="gripper_finger_base_link" name="gripper" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+      </xacro:if>
+    </xacro:if>
+    <xacro:unless value="${ros2_control}">
+      <xacro:fake_active_gripper_joint prefix="${prefix}" parent="gripper_finger_base_link" name="gripper" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    </xacro:unless>
+
+    <!-- End-effector -->
+    <xacro:phantomx_pincher_virtual_link parent="${prefix}gripper_finger_base_link" link_name="${prefix}end_effector" joint_origin_xyz="${finger_centre_offset_x} 0.0 0.0" joint_origin_rpy="${pi/2} ${-pi/2} ${pi/2}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+
+    <!-- ROS 2 control -->
+    <xacro:if value="${ros2_control}">
+      <xacro:ros2_control_phantomx_pincher prefix="${prefix}" plugin="${ros2_control_plugin}" command_interface="${ros2_control_command_interface}"/>
+    </xacro:if>
+  </xacro:macro>
+
+</robot>

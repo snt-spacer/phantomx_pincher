@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!-- URDF for PhantomX Pincher Robot Arm -->
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="$(arg name)">
+
+  <!--                   -->
+  <!-- Imported elements -->
+  <!--                   -->
+  <xacro:include filename="$(find phantomx_pincher_description)/urdf/phantomx_pincher_arm.xacro"/>
+  <xacro:include filename="$(find phantomx_pincher_description)/urdf/phantomx_pincher_mounting.xacro"/>
+  <xacro:include filename="$(find phantomx_pincher_description)/urdf/phantomx_pincher.gazebo"/>
+
+
+  <!--            -->
+  <!-- Parameters -->
+  <!--            -->
+  <!-- Name of the robot (mandatory) -->
+  <xacro:arg name="name" default="phantomx_pincher"/>
+  <!-- Prefix for all entities -->
+  <xacro:arg name="prefix" default="$(arg name)_"/>
+
+  <!-- Flag to enable collision geometry -->
+  <xacro:arg name="collision" default="true"/>
+
+  <!-- Flag to enable ros2 controllers for manipulator -->
+  <xacro:arg name="ros2_control" default="true"/>
+  <!-- The ros2_control plugin that should be loaded for the manipulator ('fake', 'ign', 'real' or custom) -->
+  <xacro:arg name="ros2_control_plugin" default="fake"/>
+  <!-- The output control command interface provided by ros2_control ('position', 'velocity', 'effort' or certain combinations 'position,velocity') -->
+  <xacro:arg name="ros2_control_command_interface" default="position"/>
+  <!-- The filepath to parameters of ROS 2 controllers -->
+  <xacro:arg name="ros2_controller_parameters" default="$(find phantomx_pincher_moveit_config)/config/controllers_$(arg ros2_control_command_interface).yaml"/>
+
+  <!-- Flag to enable mimicking of the finger joints -->
+  <xacro:arg name="mimic_finger_joints" default="false"/>
+
+  <!-- Flag to preserve fixed joints and prevent lumping when generating SDF for Gazebo -->
+  <xacro:arg name="gazebo_preserve_fixed_joint" default="false"/>
+
+
+  <!--            -->
+  <!-- Properties -->
+  <!--            -->
+  <xacro:property name="base_link" value="base_link"/>
+
+
+  <!--       -->
+  <!-- Robot -->
+  <!--       -->
+  <!-- Base link that can be used for fixing the robot to the world -->
+  <xacro:phantomx_pincher_dummy_link link_name="$(arg prefix)${base_link}" gazebo_preserve_fixed_joint="$(arg gazebo_preserve_fixed_joint)"/>
+  <joint name="$(arg prefix)${base_link}_joint" type="fixed">
+    <parent link="$(arg prefix)${base_link}"/>
+    <child link="$(arg prefix)task_board_link"/>
+  </joint>
+
+  <!-- Mount -->
+  <xacro:task_board prefix="$(arg prefix)" child="task_board_mount_link" collision="$(arg collision)" gazebo_preserve_fixed_joint="$(arg gazebo_preserve_fixed_joint)"/>
+  <xacro:task_board_mount prefix="$(arg prefix)" child="base_mount_link" collision="$(arg collision)" gazebo_preserve_fixed_joint="$(arg gazebo_preserve_fixed_joint)"/>
+  <xacro:base_mount prefix="$(arg prefix)" child="arm_base_link" collision="$(arg collision)" gazebo_preserve_fixed_joint="$(arg gazebo_preserve_fixed_joint)"/>
+
+  <!-- Arm -->
+  <xacro:phantomx_pincher prefix="$(arg prefix)" base_link="arm_base_link" collision="$(arg collision)" ros2_control="$(arg ros2_control)" ros2_control_plugin="$(arg ros2_control_plugin)" ros2_control_command_interface="$(arg ros2_control_command_interface)" mimic_finger_joints="$(arg mimic_finger_joints)" gazebo_preserve_fixed_joint="$(arg gazebo_preserve_fixed_joint)"/>
+
+  <!-- Gazebo - ROS 2 control (Ignition) -->
+  <xacro:if value="$(arg ros2_control)">
+    <xacro:if value="${'ign' in '$(arg ros2_control_plugin)' or 'gz' in '$(arg ros2_control_plugin)'}">
+      <xacro:ign_ros2_control controller_parameters="$(find phantomx_pincher_moveit_config)/config/controllers_$(arg ros2_control_command_interface).yaml"/>
+    </xacro:if>
+  </xacro:if>
+</robot>

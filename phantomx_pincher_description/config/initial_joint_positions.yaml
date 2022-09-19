@@ -1,0 +1,9 @@
+initial_joint_positions:
+  phantomx_pincher_arm:
+    arm_shoulder_pan_joint: 0.0
+    arm_shoulder_lift_joint: 0.0
+    arm_elbow_flex_joint: 0.0
+    arm_wrist_flex_joint: 0.0
+  phantomx_pincher_gripper:
+    gripper_finger1_joint: 0.001
+    gripper_finger2_joint: 0.001
