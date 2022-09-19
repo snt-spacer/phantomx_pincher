@@ -1,0 +1,247 @@
+<?xml version="1.0"?>
+<!-- Macro for (repeated) components of PhantomX Pincher Robot Arm -->
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!--                   -->
+  <!-- Imported elements -->
+  <!--                   -->
+  <xacro:include filename="$(find phantomx_pincher_description)/urdf/phantomx_pincher_utils.xacro"/>
+
+
+  <!--       -->
+  <!-- Macro -->
+  <!--       -->
+  <xacro:property name="dynamixel_ax12_fixed_joint_type" value="fixed"/>
+  <xacro:property name="dynamixel_ax12_fixed_link_mu" value="1.0"/>
+  <xacro:property name="dynamixel_ax12_fixed_link_mesh" value="ax12"/>
+  <xacro:property name="dynamixel_ax12_fixed_link_collision_type" value="box"/>
+  <xacro:property name="dynamixel_ax12_fixed_link_collision_box_size" value="0.032 0.038 0.05"/>
+  <xacro:property name="dynamixel_ax12_fixed_link_mesh_offset_collision_xyz" value="0.0 0.0 -0.0135"/>
+  <xacro:macro name="dynamixel_ax12_fixed" params="
+    prefix
+    name
+    parent
+    joint_origin_xyz
+    joint_origin_rpy
+    collision:=true
+    gazebo_preserve_fixed_joint:=false
+  ">
+    <!-- Note: `gazebo_preserve_fixed_joint` cannot be enabled for dynamixel_ax12_fixed because the SDF conversion would fail -->
+    <xacro:phantomx_pincher_joint parent="${prefix}${parent}" child="${prefix}${name}_link" joint_name="${prefix}${name}_joint" joint_type="${dynamixel_ax12_fixed_joint_type}" joint_origin_xyz="${joint_origin_xyz}" joint_origin_rpy="${joint_origin_rpy}" gazebo_preserve_fixed_joint="false"/>
+    <xacro:phantomx_pincher_link link_name="${prefix}${name}_link" mesh="${dynamixel_ax12_fixed_link_mesh}" collision="${collision}" collision_type="${dynamixel_ax12_fixed_link_collision_type}" collision_box_size="${dynamixel_ax12_fixed_link_collision_box_size}" mesh_offset_collision_xyz="${dynamixel_ax12_fixed_link_mesh_offset_collision_xyz}" mu="${dynamixel_ax12_fixed_link_mu}"/>
+  </xacro:macro>
+
+  <!--       -->
+  <!-- Macro -->
+  <!--       -->
+  <xacro:property name="bioloid_f3_fixed_joint_type" value="fixed"/>
+  <xacro:property name="bioloid_f3_fixed_link_mu" value="1.0"/>
+  <xacro:property name="bioloid_f3_fixed_link_mesh" value="f3"/>
+  <xacro:property name="bioloid_f3_fixed_link_collision_type" value="box"/>
+  <xacro:property name="bioloid_f3_fixed_link_collision_box_size" value="0.025 0.038 0.009"/>
+  <xacro:property name="bioloid_f3_fixed_link_mesh_offset_collision_xyz" value="0.0 0.0 -0.0045"/>
+  <xacro:macro name="bioloid_f3_fixed" params="
+    prefix
+    name
+    parent
+    joint_origin_xyz
+    joint_origin_rpy
+    collision:=true
+    gazebo_preserve_fixed_joint:=false
+  ">
+    <xacro:phantomx_pincher_joint parent="${prefix}${parent}" child="${prefix}${name}_link" joint_name="${prefix}${name}_joint" joint_type="${bioloid_f3_fixed_joint_type}" joint_origin_xyz="${joint_origin_xyz}" joint_origin_rpy="${joint_origin_rpy}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <xacro:phantomx_pincher_link link_name="${prefix}${name}_link" mesh="${bioloid_f3_fixed_link_mesh}" collision="${collision}" collision_type="${bioloid_f3_fixed_link_collision_type}" collision_box_size="${bioloid_f3_fixed_link_collision_box_size}" mesh_offset_collision_xyz="${bioloid_f3_fixed_link_mesh_offset_collision_xyz}" mu="${bioloid_f3_fixed_link_mu}"/>
+  </xacro:macro>
+
+  <!--       -->
+  <!-- Macro -->
+  <!--       -->
+  <xacro:property name="bioloid_f10_fixed_joint_type" value="fixed"/>
+  <xacro:property name="bioloid_f10_fixed_link_mu" value="1.0"/>
+  <xacro:property name="bioloid_f10_fixed_link_mesh" value="f10"/>
+  <xacro:property name="bioloid_f10_fixed_link_collision_type" value="box"/>
+  <xacro:property name="bioloid_f10_fixed_link_collision_box_size" value="0.025 0.038 0.004"/>
+  <xacro:property name="bioloid_f10_fixed_link_mesh_offset_collision_xyz" value="0.0 0.0 0.0"/>
+  <xacro:macro name="bioloid_f10_fixed" params="
+    prefix
+    name
+    parent
+    joint_origin_xyz
+    joint_origin_rpy
+    collision:=true
+    gazebo_preserve_fixed_joint:=false
+  ">
+    <xacro:phantomx_pincher_joint parent="${prefix}${parent}" child="${prefix}${name}_link" joint_name="${prefix}${name}_joint" joint_type="${bioloid_f10_fixed_joint_type}" joint_origin_xyz="${joint_origin_xyz}" joint_origin_rpy="${joint_origin_rpy}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <xacro:phantomx_pincher_link link_name="${prefix}${name}_link" mesh="${bioloid_f10_fixed_link_mesh}" collision="${collision}" collision_type="${bioloid_f10_fixed_link_collision_type}" collision_box_size="${bioloid_f10_fixed_link_collision_box_size}" mesh_offset_collision_xyz="${bioloid_f10_fixed_link_mesh_offset_collision_xyz}" mu="${bioloid_f10_fixed_link_mu}"/>
+  </xacro:macro>
+
+  <!--       -->
+  <!-- Macro -->
+  <!--       -->
+  <xacro:property name="bioloid_f2_revolute_joint_type" value="revolute"/>
+  <xacro:property name="bioloid_f2_revolute_joint_axis_xyz" value="0.0 1.0 0.0"/>
+  <xacro:property name="bioloid_f2_revolute_joint_torque_limit" value="30"/>
+  <xacro:property name="bioloid_f2_revolute_joint_damping" value="1.4"/>
+  <xacro:property name="bioloid_f2_revolute_joint_friction" value="0.02"/>
+  <xacro:property name="bioloid_f2_revolute_link_mu" value="1.0"/>
+  <xacro:property name="bioloid_f2_revolute_link_mesh" value="f2"/>
+  <xacro:property name="bioloid_f2_revolute_link_collision_type" value="box"/>
+  <xacro:property name="bioloid_f2_revolute_link_collision_box_size" value="0.025 0.0485 0.0375"/>
+  <xacro:property name="bioloid_f2_revolute_link_mesh_offset_collision_xyz" value="0.0 0.0 0.00775"/>
+  <xacro:macro name="bioloid_f2_revolute" params="
+    prefix
+    name
+    parent
+    joint_origin_xyz
+    joint_origin_rpy
+    joint_lower_limit
+    joint_upper_limit
+    joint_velocity_limit
+    collision:=true
+    gazebo_preserve_fixed_joint:=false
+  ">
+    <xacro:phantomx_pincher_joint parent="${prefix}${parent}" child="${prefix}${name}_link" joint_name="${prefix}${name}_joint" joint_type="${bioloid_f2_revolute_joint_type}" joint_origin_xyz="${joint_origin_xyz}" joint_origin_rpy="${joint_origin_rpy}" joint_axis_xyz="${bioloid_f2_revolute_joint_axis_xyz}" joint_lower_limit="${joint_lower_limit}" joint_upper_limit="${joint_upper_limit}" joint_velocity_limit="${joint_velocity_limit}" joint_torque_limit="${bioloid_f2_revolute_joint_torque_limit}" joint_damping="${bioloid_f2_revolute_joint_damping}" joint_friction="${bioloid_f2_revolute_joint_friction}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <xacro:phantomx_pincher_link link_name="${prefix}${name}_link" mesh="${bioloid_f2_revolute_link_mesh}" collision="${collision}" collision_type="${bioloid_f2_revolute_link_collision_type}" collision_box_size="${bioloid_f2_revolute_link_collision_box_size}" mesh_offset_collision_xyz="${bioloid_f2_revolute_link_mesh_offset_collision_xyz}" mu="${bioloid_f2_revolute_link_mu}"/>
+  </xacro:macro>
+
+  <!--       -->
+  <!-- Macro -->
+  <!--       -->
+  <xacro:property name="bioloid_f3_revolute_joint_type" value="revolute"/>
+  <xacro:property name="bioloid_f3_revolute_joint_axis_xyz" value="0.0 0.0 -1.0"/>
+  <xacro:property name="bioloid_f3_revolute_joint_torque_limit" value="30"/>
+  <xacro:property name="bioloid_f3_revolute_joint_damping" value="1.4"/>
+  <xacro:property name="bioloid_f3_revolute_joint_friction" value="0.02"/>
+  <xacro:property name="bioloid_f3_revolute_link_mu" value="1.0"/>
+  <xacro:property name="bioloid_f3_revolute_link_mesh" value="f3"/>
+  <xacro:property name="bioloid_f3_revolute_link_collision_type" value="box"/>
+  <xacro:property name="bioloid_f3_revolute_link_collision_box_size" value="0.025 0.038 0.009"/>
+  <xacro:property name="bioloid_f3_revolute_link_mesh_offset_collision_xyz" value="0.0 0.0 -0.0045"/>
+  <xacro:macro name="bioloid_f3_revolute" params="
+    prefix
+    name
+    parent
+    joint_origin_xyz
+    joint_origin_rpy
+    joint_lower_limit
+    joint_upper_limit
+    joint_velocity_limit
+    collision:=true
+    gazebo_preserve_fixed_joint:=false
+  ">
+    <xacro:phantomx_pincher_joint parent="${prefix}${parent}" child="${prefix}${name}_link" joint_name="${prefix}${name}_joint" joint_type="${bioloid_f3_revolute_joint_type}" joint_origin_xyz="${joint_origin_xyz}" joint_origin_rpy="${joint_origin_rpy}" joint_axis_xyz="${bioloid_f3_revolute_joint_axis_xyz}" joint_lower_limit="${joint_lower_limit}" joint_upper_limit="${joint_upper_limit}" joint_velocity_limit="${joint_velocity_limit}" joint_torque_limit="${bioloid_f3_revolute_joint_torque_limit}" joint_damping="${bioloid_f3_revolute_joint_damping}" joint_friction="${bioloid_f3_revolute_joint_friction}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <xacro:phantomx_pincher_link link_name="${prefix}${name}_link" mesh="${bioloid_f3_revolute_link_mesh}" collision="${collision}" collision_type="${bioloid_f3_revolute_link_collision_type}" collision_box_size="${bioloid_f3_revolute_link_collision_box_size}" mesh_offset_collision_xyz="${bioloid_f3_revolute_link_mesh_offset_collision_xyz}" mu="${bioloid_f3_revolute_link_mu}"/>
+  </xacro:macro>
+
+  <!--       -->
+  <!-- Macro -->
+  <!--       -->
+  <xacro:property name="bioloid_f4_revolute_joint_type" value="revolute"/>
+  <xacro:property name="bioloid_f4_revolute_joint_axis_xyz" value="0.0 1.0 0.0"/>
+  <xacro:property name="bioloid_f4_revolute_joint_torque_limit" value="30"/>
+  <xacro:property name="bioloid_f4_revolute_joint_damping" value="1.4"/>
+  <xacro:property name="bioloid_f4_revolute_joint_friction" value="0.02"/>
+  <xacro:property name="bioloid_f4_revolute_link_mu" value="1.0"/>
+  <xacro:property name="bioloid_f4_revolute_link_mesh" value="f4"/>
+  <xacro:property name="bioloid_f4_revolute_link_collision_type" value="box"/>
+  <xacro:property name="bioloid_f4_revolute_link_collision_box_size" value="0.028 0.0485 0.065"/>
+  <xacro:property name="bioloid_f4_revolute_link_mesh_offset_collision_xyz" value="0.0 0.0 0.0215"/>
+  <xacro:macro name="bioloid_f4_revolute" params="
+    prefix
+    name
+    parent
+    joint_origin_xyz
+    joint_origin_rpy
+    joint_lower_limit
+    joint_upper_limit
+    joint_velocity_limit
+    collision:=true
+    gazebo_preserve_fixed_joint:=false
+  ">
+    <xacro:phantomx_pincher_joint parent="${prefix}${parent}" child="${prefix}${name}_link" joint_name="${prefix}${name}_joint" joint_type="${bioloid_f4_revolute_joint_type}" joint_origin_xyz="${joint_origin_xyz}" joint_origin_rpy="${joint_origin_rpy}" joint_axis_xyz="${bioloid_f4_revolute_joint_axis_xyz}" joint_lower_limit="${joint_lower_limit}" joint_upper_limit="${joint_upper_limit}" joint_velocity_limit="${joint_velocity_limit}" joint_torque_limit="${bioloid_f4_revolute_joint_torque_limit}" joint_damping="${bioloid_f4_revolute_joint_damping}" joint_friction="${bioloid_f4_revolute_joint_friction}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <xacro:phantomx_pincher_link link_name="${prefix}${name}_link" mesh="${bioloid_f4_revolute_link_mesh}" collision="${collision}" collision_type="${bioloid_f4_revolute_link_collision_type}" collision_box_size="${bioloid_f4_revolute_link_collision_box_size}" mesh_offset_collision_xyz="${bioloid_f4_revolute_link_mesh_offset_collision_xyz}" mu="${bioloid_f4_revolute_link_mu}"/>
+  </xacro:macro>
+
+  <!--       -->
+  <!-- Macro -->
+  <!--       -->
+  <xacro:property name="gripper_finger_base_joint_type" value="fixed"/>
+  <xacro:property name="gripper_finger_base_link_mu" value="1.0"/>
+  <xacro:property name="gripper_finger_base_link_mesh" value="gripper_base"/>
+  <xacro:property name="gripper_finger_base_link_collision_type" value="box"/>
+  <xacro:property name="gripper_finger_base_link_collision_box_size" value="0.002 0.075 0.040"/>
+  <xacro:property name="gripper_finger_base_link_mesh_offset_collision_xyz" value="0.0 0.0 0.0"/>
+  <xacro:macro name="gripper_finger_base" params="
+    prefix
+    name
+    parent
+    joint_origin_xyz
+    joint_origin_rpy
+    collision:=true
+    gazebo_preserve_fixed_joint:=false
+  ">
+    <xacro:phantomx_pincher_joint parent="${prefix}${parent}" child="${prefix}${name}_link" joint_name="${prefix}${name}_joint" joint_type="${gripper_finger_base_joint_type}" joint_origin_xyz="${joint_origin_xyz}" joint_origin_rpy="${joint_origin_rpy}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <xacro:phantomx_pincher_link link_name="${prefix}${name}_link" mesh="${gripper_finger_base_link_mesh}" collision="${collision}" collision_type="${gripper_finger_base_link_collision_type}" collision_box_size="${gripper_finger_base_link_collision_box_size}" mesh_offset_collision_xyz="${gripper_finger_base_link_mesh_offset_collision_xyz}" mu="${gripper_finger_base_link_mu}"/>
+  </xacro:macro>
+
+  <!--       -->
+  <!-- Macro -->
+  <!--       -->
+  <xacro:property name="pincher_finger_joint_type" value="prismatic"/>
+  <xacro:property name="pincher_finger_joint_axis_xyz" value="1.0 0.0 0.0"/>
+  <xacro:property name="pincher_finger_joint_lower_limit" value="0.001"/>
+  <xacro:property name="pincher_finger_joint_upper_limit" value="0.0158"/>
+  <xacro:property name="pincher_finger_joint_velocity_limit" value="0.01"/>
+  <xacro:property name="pincher_finger_joint_torque_limit" value="30"/>
+  <xacro:property name="pincher_finger_joint_damping" value="1.8"/>
+  <xacro:property name="pincher_finger_joint_friction" value="0.06"/>
+  <xacro:property name="pincher_finger_link_mu" value="1.0"/>
+  <xacro:property name="pincher_finger_link_mesh" value="finger"/>
+  <xacro:property name="pincher_finger_link_collision_type" value="mesh"/>
+  <xacro:macro name="pincher_finger" params="
+    prefix
+    name
+    parent
+    joint_origin_xyz
+    joint_origin_rpy
+    collision:=true
+    mimic_joint:=none
+    gazebo_preserve_fixed_joint:=false
+  ">
+    <xacro:phantomx_pincher_joint parent="${prefix}${parent}" child="${prefix}${name}_link" joint_name="${prefix}${name}_joint" joint_type="${pincher_finger_joint_type}" joint_origin_xyz="${joint_origin_xyz}" joint_origin_rpy="${joint_origin_rpy}" joint_axis_xyz="${pincher_finger_joint_axis_xyz}" joint_lower_limit="${pincher_finger_joint_lower_limit}" joint_upper_limit="${pincher_finger_joint_upper_limit}" joint_velocity_limit="${pincher_finger_joint_velocity_limit}" joint_torque_limit="${pincher_finger_joint_torque_limit}" joint_damping="${pincher_finger_joint_damping}" joint_friction="${pincher_finger_joint_friction}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}" mimic_joint="${mimic_joint}"/>
+    <xacro:phantomx_pincher_link link_name="${prefix}${name}_link" mesh="${pincher_finger_link_mesh}" collision="${collision}" collision_type="${pincher_finger_link_collision_type}" mu="${pincher_finger_link_mu}"/>
+  </xacro:macro>
+
+  <!--       -->
+  <!-- Macro -->
+  <!--       -->
+  <xacro:property name="fake_active_gripper_joint_type" value="revolute"/>
+  <xacro:property name="fake_active_gripper_joint_axis_xyz" value="1.0 0.0 0.0"/>
+  <xacro:property name="fake_active_gripper_joint_torque_limit" value="30"/>
+  <xacro:property name="fake_active_gripper_joint_velocity_limit" value="${3*pi/4}"/>
+  <xacro:property name="fake_active_gripper_joint_lower_limit" value="${-149*pi/180}"/>
+  <xacro:property name="fake_active_gripper_joint_upper_limit" value="0.0"/>
+  <xacro:macro name="fake_active_gripper_joint" params="
+    prefix
+    name
+    parent
+    joint_origin_xyz:=${default_vector3}
+    joint_origin_rpy:=${default_vector3}
+    joint_axis_xyz:=${fake_active_gripper_joint_axis_xyz}
+    joint_torque_limit:=${fake_active_gripper_joint_torque_limit}
+    joint_velocity_limit:=${fake_active_gripper_joint_velocity_limit}
+    joint_lower_limit:=${fake_active_gripper_joint_lower_limit}
+    joint_upper_limit:=${fake_active_gripper_joint_upper_limit}
+    gazebo_preserve_fixed_joint:=false
+  ">
+    <xacro:phantomx_pincher_dummy_link link_name="${prefix}${name}_link" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
+    <joint name="${prefix}${name}_joint" type="${fake_active_gripper_joint_type}">
+    <origin xyz="${joint_origin_xyz}" rpy="${joint_origin_rpy}"/>
+    <axis xyz="${joint_axis_xyz}"/>
+    <limit effort="${joint_torque_limit}" velocity="${joint_velocity_limit}" lower="${joint_lower_limit}" upper="${joint_upper_limit}"/>
+    <parent link="${prefix}${parent}"/>
+    <child link="${prefix}${name}_link"/>
+    </joint>
+  </xacro:macro>
+
+</robot>

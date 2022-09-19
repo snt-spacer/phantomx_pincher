@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!-- Macro for inertial properties of PhantomX Pincher Robot Arm -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!--       -->
+  <!-- Macro -->
+  <!--       -->
+  <xacro:macro name="phantomx_pincher_inertial" params="mesh mesh_offset_rpy">
+    <xacro:if value="${mesh == 'ax12'}">
+      <inertial>
+        <origin xyz="-7.38454e-07 0.000422614 -0.0130296" rpy="${mesh_offset_rpy}"/>
+        <mass value="0.08139802400654242"/>
+        <inertia ixx="2.3143627968295997e-05" iyy="1.9936031209683584e-05" izz="1.2576986445925398e-05" ixy="-6.904875516785507e-10" ixz="-2.4208698077741694e-10" iyz="3.504110421945422e-07"/>
+      </inertial>
+    </xacro:if>
+
+    <xacro:if value="${mesh == 'f2'}">
+      <inertial>
+        <origin xyz="1.83625e-06 4.41782e-08 0.0154045" rpy="${mesh_offset_rpy}"/>
+        <mass value="0.014479017200129543"/>
+        <inertia ixx="6.472388590001224e-06" iyy="2.498962550910956e-06" izz="5.6994603934534456e-06" ixy="-1.892671596204799e-12" ixz="-3.0007457063740617e-10" iyz="-2.3584142968316667e-12"/>
+      </inertial>
+    </xacro:if>
+
+    <xacro:if value="${mesh == 'f3'}">
+      <inertial>
+        <origin xyz="-1.72524e-06 4.83783e-07 -0.00240396" rpy="${mesh_offset_rpy}"/>
+        <mass value="0.006374458272892439"/>
+        <inertia ixx="9.270000220058128e-07" iyy="4.018633414376187e-07" izz="1.2864371800536346e-06" ixy="-2.5814168895313843e-12" ixz="-2.4985237649917935e-10" iyz="9.813034257837808e-12"/>
+      </inertial>
+    </xacro:if>
+
+    <xacro:if value="${mesh == 'f4'}">
+      <inertial>
+        <origin xyz="-0.000589318 3.65417e-05 0.0288737" rpy="${mesh_offset_rpy}"/>
+        <mass value="0.025203193826508614"/>
+        <inertia ixx="1.997638801949545e-05" iyy="1.214970461462084e-05" izz="1.1427207264696245e-05" ixy="9.66261623973993e-10" ixz="1.0343105915459652e-06" iyz="-1.7113644679963033e-08"/>
+      </inertial>
+    </xacro:if>
+
+    <xacro:if value="${mesh == 'f10'}">
+      <inertial>
+        <origin xyz="-8.67784e-06 -8.79317e-07 0.000171599" rpy="${mesh_offset_rpy}"/>
+        <mass value="0.0035170756160130324"/>
+        <inertia ixx="3.992017647723594e-07" iyy="2.2036114209006905e-07" izz="6.123206341186544e-07" ixy="-3.5246444817584626e-12" ixz="-9.729500575523489e-13" iyz="2.2872438374335695e-12"/>
+      </inertial>
+    </xacro:if>
+
+    <xacro:if value="${mesh == 'finger'}">
+      <inertial>
+        <origin xyz="-0.00607194 -4.42132e-19 -0.00471261" rpy="${mesh_offset_rpy}"/>
+        <mass value="0.009843256743296712"/>
+        <inertia ixx="1.8229100836948666e-06" iyy="1.595545910676557e-06" izz="1.0262210845211422e-06" ixy="-2.797502899373518e-23" ixz="3.498974201392864e-07" iyz="4.770944797128244e-23"/>
+      </inertial>
+    </xacro:if>
+
+    <xacro:if value="${mesh == 'gripper_base'}">
+      <inertial>
+        <origin xyz="0 2.98023e-08 0" rpy="${mesh_offset_rpy}"/>
+        <mass value="0.011837674839899828"/>
+        <inertia ixx="7.127260849628046e-06" iyy="1.5822994239366863e-06" izz="5.5528530038746866e-06" ixy="3.400011875409145e-24" ixz="-0.0" iyz="-0.0"/>
+      </inertial>
+    </xacro:if>
+
+    <xacro:if value="${mesh == 'phantomx_pincher_mount'}">
+      <inertial>
+        <origin xyz="0.00037683 0.000627242 0.034281" rpy="${mesh_offset_rpy}"/>
+        <mass value="0.04167327881348052"/>
+        <inertia ixx="4.209466937688695e-05" iyy="4.06306356962411e-05" izz="6.067656565666726e-05" ixy="-3.983275834765508e-07" ixz="1.3653283599512486e-07" iyz="5.014723052473674e-07"/>
+      </inertial>
+    </xacro:if>
+
+    <xacro:if value="${mesh == 'task_board_module_phantomx_pincher_mount'}">
+      <inertial>
+        <origin xyz="-4.50216e-09 -4.41466e-09 0.00149998" rpy="${mesh_offset_rpy}"/>
+        <mass value="0.05832672118651948"/>
+        <inertia ixx="0.0001172231384236186" iyy="0.00011722313733495664" izz="0.00023435878795674127" ixy="5.27948376375961e-14" ixz="3.9903733813665316e-22" iyz="2.1401492655855885e-23"/>
+      </inertial>
+    </xacro:if>
+
+    <xacro:if value="${mesh == 'task_board'}">
+      <inertial>
+        <origin xyz="7.59924e-07 2.79305e-08 0.0164041" rpy="${mesh_offset_rpy}"/>
+        <mass value="0.6"/>
+        <inertia ixx="0.0065283400178141335" iyy="0.003398671922618594" izz="0.009860990026576852" ixy="-1.7343908287424124e-12" ixz="2.8936318115622572e-09" iyz="-8.805547978958671e-11"/>
+      </inertial>
+    </xacro:if>
+  </xacro:macro>
+</robot>
