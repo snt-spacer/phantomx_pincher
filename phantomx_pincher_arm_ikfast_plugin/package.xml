@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>phantomx_pincher_arm_ikfast_plugin</name>
+  <version>1.0.0</version>
+  <description>IKFast plugin for PhantomX Pincher Robot Arm</description>
+  <maintainer email="andrej.orsula@uni.lu">Andrej Orsula</maintainer>
+  <author>Andrej Orsula</author>
+  <license>BSD</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <build_depend>liblapack-dev</build_depend>
+  <build_depend>moveit_core</build_depend>
+  <build_depend>pluginlib</build_depend>
+  <build_depend>rclcpp</build_depend>
+  <build_depend>tf2_eigen</build_depend>
+  <build_depend>tf2_kdl</build_depend>
+  <exec_depend>liblapack-dev</exec_depend>
+  <exec_depend>moveit_core</exec_depend>
+  <exec_depend>pluginlib</exec_depend>
+  <exec_depend>rclcpp</exec_depend>
+
+  <export>
+    <moveit_core plugin="${prefix}/phantomx_pincher_arm_moveit_ikfast_plugin_description.xml"/>
+  </export>
+</package>

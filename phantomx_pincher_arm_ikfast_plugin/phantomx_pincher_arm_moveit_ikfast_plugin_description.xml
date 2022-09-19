@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<library path="phantomx_pincher_arm_moveit_ikfast_plugin">
+  <class name="phantomx_pincher_arm/IKFastKinematicsPlugin" type="phantomx_pincher_arm::IKFastKinematicsPlugin" base_class_type="kinematics::KinematicsBase">
+    <description>IKFast61 plugin for closed-form kinematics of phantomx_pincher arm</description>
+  </class>
+</library>
