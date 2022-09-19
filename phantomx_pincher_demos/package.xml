@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>phantomx_pincher_demos</name>
+  <version>1.0.0</version>
+  <description>Demos for PhantomX Pincher Robot Arm</description>
+  <maintainer email="andrej.orsula@uni.lu">Andrej Orsula</maintainer>
+  <author>Andrej Orsula</author>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>phantomx_pincher</exec_depend>
+  <exec_depend>moveit_commander</exec_depend>
+</package>
