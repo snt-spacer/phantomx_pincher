@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: phantomx_pincher_description
+    relative_path: urdf/phantomx_pincher.urdf.xacro
+    xacro_args: name:=phantomx_pincher ros_control:=false
+  SRDF:
+    relative_path: srdf/phantomx_pincher.srdf.xacro
+  CONFIG:
+    author_name: Andrej Orsula
+    author_email: andrej.orsula@uni.lu
+    generated_timestamp: 1663100000

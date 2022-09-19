@@ -1,0 +1,13 @@
+controller_list:
+  - name: fake_arm_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - phantomx_pincher_arm_shoulder_pan_joint
+      - phantomx_pincher_arm_shoulder_lift_joint
+      - phantomx_pincher_arm_elbow_flex_joint
+      - phantomx_pincher_arm_wrist_flex_joint
+  - name: fake_gripper_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - phantomx_pincher_gripper_finger1_joint
+      - phantomx_pincher_gripper_finger2_joint

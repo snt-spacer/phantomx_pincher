@@ -1,0 +1,11 @@
+<launch>
+  <!-- Path to configuration for MoveIt Servo -->
+  <arg name="servo_config" default="$(find phantomx_pincher_moveit_config)/config/servo.yaml"/>
+  <!-- Flag whether the robot is started in a Gazebo simulation environment -->
+  <arg name="use_gazebo" default="false"/>
+
+  <node name="servo_server" pkg="moveit_servo" type="servo_server">
+    <param name="use_gazebo" value="$(arg use_gazebo)"/>
+    <rosparam command="load" file="$(arg servo_config)"/>
+  </node>
+</launch>

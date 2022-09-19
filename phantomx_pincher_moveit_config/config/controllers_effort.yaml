@@ -1,0 +1,49 @@
+joint_state_publisher:
+  type: joint_state_controller/JointStateController
+  publish_rate: 250
+
+joint_trajectory_controller:
+  type: effort_controllers/JointTrajectoryController
+  joints:
+    - phantomx_pincher_arm_shoulder_pan_joint
+    - phantomx_pincher_arm_shoulder_lift_joint
+    - phantomx_pincher_arm_elbow_flex_joint
+    - phantomx_pincher_arm_wrist_flex_joint
+  gains:
+    phantomx_pincher_arm_shoulder_pan_joint:
+      p: 150.0
+      d: 0.0001
+      i: 125.0
+      i_clamp: 20.0
+    phantomx_pincher_arm_shoulder_lift_joint:
+      p: 150.0
+      d: 0.0001
+      i: 125.0
+      i_clamp: 20.0
+    phantomx_pincher_arm_elbow_flex_joint:
+      p: 150.0
+      d: 0.0001
+      i: 125.0
+      i_clamp: 20.0
+    phantomx_pincher_arm_wrist_flex_joint:
+      p: 150.0
+      d: 0.0001
+      i: 125.0
+      i_clamp: 20.0
+
+gripper_trajectory_controller:
+  type: effort_controllers/JointTrajectoryController
+  joints:
+    - phantomx_pincher_gripper_finger1_joint
+    - phantomx_pincher_gripper_finger2_joint
+  gains:
+    phantomx_pincher_gripper_finger1_joint:
+      p: 75.0
+      d: 0.001
+      i: 100.0
+      i_clamp: 10.0
+    phantomx_pincher_gripper_finger2_joint:
+      p: 75.0
+      d: 0.001
+      i: 100.0
+      i_clamp: 10.0
