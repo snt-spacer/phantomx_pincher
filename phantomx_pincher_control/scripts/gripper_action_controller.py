@@ -29,6 +29,9 @@
   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
+from collections import deque
+from statistics import mean
+
 import actionlib
 import rospy
 from control_msgs.msg import GripperCommandAction
@@ -38,22 +41,24 @@ from std_msgs.msg import Float64
 
 class GripperController:
     def __init__(self):
-        self.tolerance = rospy.get_param("~tolerance", 0.001)
+        self.tolerance = rospy.get_param("~tolerance", 0.002)
         self.min_opening = rospy.get_param("~min_opening", 0.0)
         self.max_opening = rospy.get_param("~max_opening", 0.0316)
         self.joint = rospy.get_param("~joint", "gripper_finger1_joint")
+        self.velocity_history_queue = rospy.get_param("~velocity_history_queue", 5)
 
         self.command_pub = rospy.Publisher(
             self.joint + "/command", Float64, queue_size=5
         )
 
         self.position = None
+        self.velocity_history = deque(maxlen=self.velocity_history_queue)
         rospy.Subscriber("joint_states", JointState, self.stateCb)
 
-        rospy.loginfo("Waiting for the initial gripper position")
+        rospy.loginfo("Waiting for the initial gripper state")
         while self.position is None:
             rospy.sleep(0.1)
-        rospy.loginfo("Initial gripper position received")
+        rospy.loginfo("Initial gripper state received")
 
         self.server = actionlib.SimpleActionServer(
             "~gripper_cmd",
@@ -74,15 +79,39 @@ class GripperController:
         command.position = min(
             max(command.position, self.min_opening), self.max_opening
         )
-
         if goal.command.position != command.position:
             rospy.logwarn(
                 "Gripper controller: Action goal clipped to:%f m" % command.position
             )
 
         self.command_pub.publish(command.position)
+        self.velocity_history.clear()
 
         while True:
+            if abs(self.position - command.position) < self.tolerance:
+                rospy.loginfo(
+                    "Done. Pos=%.5f Goal=%.5f Tol=%.5f",
+                    self.position,
+                    command.position,
+                    self.tolerance,
+                )
+                self.server.set_succeeded()
+                rospy.loginfo("Gripper Controller: Succeeded.")
+                return
+
+            if self.velocity_history_queue == len(self.velocity_history):
+                if abs(mean(self.velocity_history)) < self.tolerance:
+                    if self.position > command.position:
+                        self.command_pub.publish(self.position - self.tolerance)
+                    else:
+                        self.command_pub.publish(self.position + self.tolerance)
+
+                    self.server.set_succeeded()
+                    rospy.logwarn(
+                        "Gripper Controller: Object in the gripper detected (treating as succeeded)."
+                    )
+                    return
+
             if self.server.is_preempt_requested():
                 self.server.set_preempted()
                 rospy.loginfo(
@@ -94,24 +123,13 @@ class GripperController:
                 rospy.logwarn("Gripper Controller: Preempted.")
                 return
 
-            if abs(self.position - command.position) < self.tolerance:
-                rospy.loginfo(
-                    "Done. Pos=%.5f Goal=%.5f Tol=%.5f",
-                    self.position,
-                    command.position,
-                    self.tolerance,
-                )
-                break
-
             rospy.sleep(0.01)
-
-        self.server.set_succeeded()
-        rospy.loginfo("Gripper Controller: Succeeded.")
 
     def stateCb(self, msg):
         for i, name in enumerate(msg.name):
             if name == self.joint:
                 self.position = msg.position[i] * 2
+                self.velocity_history.append(msg.velocity[i])
 
 
 if __name__ == "__main__":

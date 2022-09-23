@@ -1,4 +1,4 @@
 min_opening: 0.0
 max_opening: 0.0316
-tolerance: 0.0005
+tolerance: 0.002
 joint: phantomx_pincher_gripper_finger1_joint
