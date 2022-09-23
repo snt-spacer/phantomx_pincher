@@ -1,6 +1,6 @@
-rate: 40
-read_rate: 40
-write_rate: 40
+rate: 120
+read_rate: 60
+write_rate: 30
 
 joints:
   phantomx_pincher_arm_shoulder_pan_joint:
@@ -9,31 +9,31 @@ joints:
     neutral: 512
     min_angle: -150
     max_angle: 150
-    max_speed: 64
+    max_speed: 512
   phantomx_pincher_arm_shoulder_lift_joint:
     id: 2
     type: dynamixel
     min_angle: -120
     max_angle: 120
-    max_speed: 64
+    max_speed: 512
   phantomx_pincher_arm_elbow_flex_joint:
     id: 3
     type: dynamixel
     min_angle: -139
     max_angle: 139
-    max_speed: 64
+    max_speed: 512
   phantomx_pincher_arm_wrist_flex_joint:
     id: 4
     type: dynamixel
     min_angle: -98
     max_angle: 103
-    max_speed: 64
+    max_speed: 512
   phantomx_pincher_gripper_joint:
     id: 5
     type: dynamixel
     min_angle: -149
     max_angle: 0
-    max_speed: 256
+    max_speed: 128
 
 controllers:
   joint_trajectory_controller:
