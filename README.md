@@ -36,14 +36,14 @@ This repository consists of the following packages. For more detailed informatio
 
 ### Installation
 
-<details><summary><b>Option A – Local Installation</b></summary>
+<details open><summary><b>Option A – Local Installation</b></summary>
 
 #### **Dependencies**
 
-These are the primary dependencies required to use this project.
+These are the primary dependencies required to use this project. Please install them following their respective tutorial.
 
 - ROS [Noetic](http://wiki.ros.org/noetic/Installation)
-- Gazebo [Fortress](https://gazebosim.org/docs/fortress)
+- Gazebo [Fortress](https://gazebosim.org/docs/fortress/install)
 
 All additional dependencies are either pulled via [vcstool](https://wiki.ros.org/vcstool) ([phantomx_pincher.repos](./phantomx_pincher.repos)) or installed via [rosdep](https://wiki.ros.org/rosdep) during the building process below.
 
@@ -52,12 +52,18 @@ All additional dependencies are either pulled via [vcstool](https://wiki.ros.org
 Clone this repository, import dependencies, install dependencies and build with [catkin tools](https://catkin-tools.readthedocs.io).
 
 ```bash
+# Install essentials
+sudo apt update && sudo apt install -y git python3-catkin-tools python3-vcstool
+# Create a workspace
+mkdir -p phantomx_pincher/src && cd phantomx_pincher 
 # Clone this repository into your favourite ROS workspace
-git clone https://github.com/AndrejOrsula/phantomx_pincher.git
+git clone https://github.com/snt-spacer/phantomx_pincher.git -b ros1 src/phantomx_pincher
 # Import dependencies
-vcs import < phantomx_pincher/phantomx_pincher.repos
+vcs import src < src/phantomx_pincher/phantomx_pincher.repos
+# Specify which Gazebo version to use
+export IGNITION_VERSION=fortress
 # Install dependencies
-IGNITION_VERSION=fortress rosdep install -y -r -i --rosdistro ${ROS_DISTRO} --from-paths .
+rosdep install -y -r -i --rosdistro noetic --from-paths src
 # Build
 catkin build --cmake-args "-DCMAKE_BUILD_TYPE=Release"
 ```
