@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if which wget >/dev/null; then
+    echo "Installing wget because it has not been detected...."
+    sudo apt-get update && sudo apt-get install -y wget
+fi
+
 # Install Docker
 echo "Installing Docker..."
 if [[ ! -x "$(command -v docker)" ]]; then
