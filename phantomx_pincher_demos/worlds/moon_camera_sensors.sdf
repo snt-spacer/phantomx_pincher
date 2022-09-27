@@ -1,0 +1,590 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <world name="moon">
+
+    <!-- Physics -->
+    <plugin filename="ignition-gazebo-physics-system" name="ignition::gazebo::systems::Physics"/>
+    <physics name="dart_physics" type="dart">
+      <max_step_size>0.01</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <!-- Moon gravity -->
+    <gravity>0.0 0.0 -1.622</gravity>
+
+    <!-- Scene -->
+    <scene>
+      <ambient>0 0 0</ambient>
+      <!-- <ambient_light>0 0 0</ambient_light> -->
+      <grid>false</grid>
+    </scene>
+
+    <!-- World plugins -->
+    <plugin filename="ignition-gazebo-user-commands-system" name="ignition::gazebo::systems::UserCommands"/>
+    <plugin filename="ignition-gazebo-scene-broadcaster-system" name="ignition::gazebo::systems::SceneBroadcaster"/>
+    <plugin filename="ignition-gazebo-sensors-system" name="ignition::gazebo::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <!--             -->
+    <!-- GUI plugins -->
+    <!--             -->
+    <gui fullscreen="0">
+      <!-- 3D scene -->
+      <plugin filename="MinimalScene" name="3D View">
+        <ignition-gui>
+          <title>3D View</title>
+          <property type="bool" key="showTitleBar">false</property>
+          <property type="string" key="state">docked</property>
+        </ignition-gui>
+
+        <engine>ogre2</engine>
+        <scene>scene</scene>
+        <ambient_light>0 0 0</ambient_light>
+        <background_color>0 0 0</background_color>
+        <camera_pose>-1.2 1.0 0.85 0 0.5 -0.785</camera_pose>
+      </plugin>
+
+      <!-- Plugins that add functionality to the scene -->
+      <plugin filename="EntityContextMenuPlugin" name="Entity context menu">
+        <ignition-gui>
+          <property key="state" type="string">floating</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </ignition-gui>
+      </plugin>
+      <plugin filename="GzSceneManager" name="Scene Manager">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </ignition-gui>
+      </plugin>
+      <plugin filename="InteractiveViewControl" name="Interactive view control">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </ignition-gui>
+      </plugin>
+      <plugin filename="CameraTracking" name="Camera Tracking">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </ignition-gui>
+      </plugin>
+      <plugin filename="MarkerManager" name="Marker manager">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </ignition-gui>
+      </plugin>
+      <plugin filename="SelectEntities" name="Select Entities">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </ignition-gui>
+      </plugin>
+
+      <plugin filename="Spawn" name="Spawn Entities">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </ignition-gui>
+      </plugin>
+
+      <plugin filename="VisualizationCapabilities" name="Visualization Capabilities">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </ignition-gui>
+      </plugin>
+
+      <!-- World control -->
+      <plugin filename="WorldControl" name="World control">
+        <ignition-gui>
+          <title>World control</title>
+          <property type="bool" key="showTitleBar">false</property>
+          <property type="bool" key="resizable">false</property>
+          <property type="double" key="height">72</property>
+          <property type="double" key="width">121</property>
+          <property type="double" key="z">1</property>
+
+          <property type="string" key="state">floating</property>
+          <anchors target="3D View">
+            <line own="left" target="left"/>
+            <line own="bottom" target="bottom"/>
+          </anchors>
+        </ignition-gui>
+
+        <play_pause>true</play_pause>
+        <step>true</step>
+        <start_paused>true</start_paused>
+        <use_event>true</use_event>
+      </plugin>
+
+      <!-- World statistics -->
+      <plugin filename="WorldStats" name="World stats">
+        <ignition-gui>
+          <title>World stats</title>
+          <property type="bool" key="showTitleBar">false</property>
+          <property type="bool" key="resizable">false</property>
+          <property type="double" key="height">110</property>
+          <property type="double" key="width">290</property>
+          <property type="double" key="z">1</property>
+
+          <property type="string" key="state">floating</property>
+          <anchors target="3D View">
+            <line own="right" target="right"/>
+            <line own="bottom" target="bottom"/>
+          </anchors>
+        </ignition-gui>
+
+        <sim_time>true</sim_time>
+        <real_time>true</real_time>
+        <real_time_factor>true</real_time_factor>
+        <iterations>true</iterations>
+      </plugin>
+
+      <!-- Insert simple shapes -->
+      <plugin filename="Shapes" name="Shapes">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="x" type="double">0</property>
+          <property key="y" type="double">0</property>
+          <property key="width" type="double">250</property>
+          <property key="height" type="double">50</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+          <property key="cardBackground" type="string">#666666</property>
+        </ignition-gui>
+      </plugin>
+
+      <!-- Insert lights -->
+      <plugin filename="Lights" name="Lights">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="x" type="double">250</property>
+          <property key="y" type="double">0</property>
+          <property key="width" type="double">150</property>
+          <property key="height" type="double">50</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+          <property key="cardBackground" type="string">#666666</property>
+        </ignition-gui>
+      </plugin>
+
+      <!-- Translate / rotate -->
+      <plugin filename="TransformControl" name="Transform control">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="x" type="double">0</property>
+          <property key="y" type="double">50</property>
+          <property key="width" type="double">250</property>
+          <property key="height" type="double">50</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+          <property key="cardBackground" type="string">#777777</property>
+        </ignition-gui>
+      </plugin>
+
+      <!-- Screenshot -->
+      <plugin filename="Screenshot" name="Screenshot">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="x" type="double">250</property>
+          <property key="y" type="double">50</property>
+          <property key="width" type="double">50</property>
+          <property key="height" type="double">50</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+          <property key="cardBackground" type="string">#777777</property>
+        </ignition-gui>
+      </plugin>
+
+      <!-- Copy/Paste -->
+      <plugin filename="CopyPaste" name="CopyPaste">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="x" type="double">300</property>
+          <property key="y" type="double">50</property>
+          <property key="width" type="double">100</property>
+          <property key="height" type="double">50</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+          <property key="cardBackground" type="string">#777777</property>
+        </ignition-gui>
+      </plugin>
+
+      <!-- Image displays -->
+      <plugin filename="ImageDisplay" name="RGB Image">
+        <topic>rgbd_camera/image</topic>
+        <topic_picker>false</topic_picker>
+        <ignition-gui>
+          <title>RGB Image</title>
+          <property key="showTitleBar" type="bool">true</property>
+          <property key="showCloseButton" type="bool">false</property>
+          <property key="showCollapseButton" type="bool">false</property>
+          <property key="showDockButton" type="bool">false</property>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">240</property>
+          <property key="height" type="double">200</property>
+          <property key="state" type="string">floating</property>
+          <anchors target="3D View">
+            <line own="top" target="top"/>
+            <line own="right" target="right"/>
+          </anchors>
+        </ignition-gui>
+      </plugin>
+      <plugin filename="ImageDisplay" name="Depth Map">
+        <topic>rgbd_camera/depth_image</topic>
+        <topic_picker>false</topic_picker>
+        <ignition-gui>
+          <title>Depth Map</title>
+          <property key="showTitleBar" type="bool">true</property>
+          <property key="showCloseButton" type="bool">false</property>
+          <property key="showCollapseButton" type="bool">false</property>
+          <property key="showDockButton" type="bool">false</property>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">240</property>
+          <property key="height" type="double">200</property>
+          <property key="state" type="string">floating</property>
+          <anchors target="RGB Image">
+            <line own="top" target="bottom"/>
+            <line own="right" target="right"/>
+          </anchors>
+        </ignition-gui>
+      </plugin>
+      <plugin filename="ImageDisplay" name="Instance Segmentation">
+        <topic>instance/colored_map</topic>
+        <topic_picker>false</topic_picker>
+        <ignition-gui>
+          <title>Instance Segmentation</title>
+          <property key="showTitleBar" type="bool">true</property>
+          <property key="showCloseButton" type="bool">false</property>
+          <property key="showCollapseButton" type="bool">false</property>
+          <property key="showDockButton" type="bool">false</property>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">240</property>
+          <property key="height" type="double">200</property>
+          <property key="state" type="string">floating</property>
+          <anchors target="Depth Map">
+            <line own="top" target="bottom"/>
+            <line own="right" target="right"/>
+          </anchors>
+        </ignition-gui>
+      </plugin>
+      <plugin filename="ImageDisplay" name="Semantic Segmentation">
+        <topic>semantic/colored_map</topic>
+        <topic_picker>false</topic_picker>
+        <ignition-gui>
+          <title>Semantic Segmentation</title>
+          <property key="showTitleBar" type="bool">true</property>
+          <property key="showCloseButton" type="bool">false</property>
+          <property key="showCollapseButton" type="bool">false</property>
+          <property key="showDockButton" type="bool">false</property>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">240</property>
+          <property key="height" type="double">200</property>
+          <property key="state" type="string">floating</property>
+          <anchors target="Instance Segmentation">
+            <line own="top" target="bottom"/>
+            <line own="right" target="right"/>
+          </anchors>
+        </ignition-gui>
+      </plugin>
+    </gui>
+
+    <!--              -->
+    <!-- Illumination -->
+    <!--              -->
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>2.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>0.25 -0.5 -0.1</direction>
+    </light>
+
+    <!--        -->
+    <!-- Models -->
+    <!--        -->
+    <!-- Terrain -->
+    <include>
+      <uri>
+        https://fuel.gazebosim.org/1.0/AndrejOrsula/models/lunar_surface4
+      </uri>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>10</label>
+      </plugin>
+    </include>
+
+    <!-- Robot -->
+    <include>
+      <uri>
+        model://phantomx_pincher
+      </uri>
+      <pose>-0.7 0 -0.075 0 0 0</pose>
+      <plugin filename="ignition-gazebo-detachable-joint-system" name="ignition::gazebo::systems::DetachableJoint">
+        <parent_link>phantomx_pincher_arm_wrist_flex_link</parent_link>
+        <child_model>camera</child_model>
+        <child_link>camera_link</child_link>
+      </plugin>
+    </include>
+
+    <!-- Sensors -->
+    <model name="camera">
+      <static>true</static>
+      <pose>-0.795 0 0.35 0 -1.5708 0</pose>
+      <link name="camera_link">
+        <visual name="camera_visual_lens">
+          <pose>-0.005 0 0 0 1.5708 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01</radius>
+              <length>0.01</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.0 0.8 0.0</ambient>
+            <diffuse>0.0 0.8 0.0</diffuse>
+            <specular>0.0 0.8 0.0</specular>
+          </material>
+        </visual>
+        <visual name="camera_visual_body">
+          <pose>-0.025 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.03 0.025 0.025</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.0 0.8 0.0</ambient>
+            <diffuse>0.0 0.8 0.0</diffuse>
+            <specular>0.0 0.8 0.0</specular>
+          </material>
+        </visual>
+        <inertial>
+          <mass>0.06</mass>
+          <inertia>
+            <ixx>0.0004</ixx>
+            <iyy>0.00145</iyy>
+            <izz>0.00145</izz>
+          </inertia>
+        </inertial>
+        <sensor name="rgbd_camera" type="rgbd_camera">
+          <camera>
+            <horizontal_fov>1.047</horizontal_fov>
+            <image>
+              <width>320</width>
+              <height>240</height>
+            </image>
+            <clip>
+              <near>0.001</near>
+              <far>1000</far>
+            </clip>
+            <depth_camera>
+              <clip>
+                <near>0.1</near>
+                <far>10</far>
+              </clip>
+            </depth_camera>
+            <noise>
+              <type>gaussian</type>
+              <mean>0.0</mean>
+              <stddev>0.0</stddev>
+            </noise>
+          </camera>
+          <always_on>1</always_on>
+          <update_rate>30</update_rate>
+          <visualize>true</visualize>
+          <topic>rgbd_camera</topic>
+        </sensor>
+        <sensor name="instance_segmentation_camera" type="segmentation">
+          <topic>instance</topic>
+          <camera>
+            <segmentation_type>instance</segmentation_type>
+            <horizontal_fov>1.047</horizontal_fov>
+            <image>
+              <width>320</width>
+              <height>240</height>
+            </image>
+            <clip>
+              <near>0.001</near>
+              <far>1000</far>
+            </clip>
+          </camera>
+          <always_on>1</always_on>
+          <update_rate>30</update_rate>
+          <visualize>true</visualize>
+        </sensor>
+        <sensor name="semantic_segmentation_camera" type="segmentation">
+          <topic>semantic</topic>
+          <camera>
+            <segmentation_type>semantic</segmentation_type>
+            <horizontal_fov>1.047</horizontal_fov>
+            <image>
+              <width>320</width>
+              <height>240</height>
+            </image>
+            <clip>
+              <near>0.001</near>
+              <far>1000</far>
+            </clip>
+          </camera>
+          <always_on>1</always_on>
+          <update_rate>30</update_rate>
+          <visualize>true</visualize>
+        </sensor>
+      </link>
+    </model>
+
+    <!-- Objects -->
+    <include>
+      <uri>
+        https://fuel.gazebosim.org/1.0/AndrejOrsula/models/lunar_rock0
+      </uri>
+      <pose>0 -0.3 0.05 0 0 0</pose>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>20</label>
+      </plugin>
+    </include>
+    <include>
+      <uri>
+        https://fuel.gazebosim.org/1.0/AndrejOrsula/models/lunar_rock1
+      </uri>
+      <pose>0 -0.2 0.1 0 0 0</pose>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>20</label>
+      </plugin>
+    </include>
+    <include>
+      <uri>
+        https://fuel.gazebosim.org/1.0/AndrejOrsula/models/lunar_rock2
+      </uri>
+      <pose>0 0.1 0.05 0 0 0</pose>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>20</label>
+      </plugin>
+    </include>
+    <include>
+      <uri>
+        https://fuel.gazebosim.org/1.0/AndrejOrsula/models/lunar_rock3
+      </uri>
+      <pose>0.1 -0.6 0.1 0 0 0</pose>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>20</label>
+      </plugin>
+    </include>
+    <include>
+      <uri>
+        https://fuel.gazebosim.org/1.0/AndrejOrsula/models/lunar_rock4
+      </uri>
+      <pose>0.1 0.3 0 0 0 0</pose>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>20</label>
+      </plugin>
+    </include>
+    <include>
+      <uri>
+        https://fuel.gazebosim.org/1.0/AndrejOrsula/models/lunar_rock5
+      </uri>
+      <pose>0.1 0.4 0.1 0 0 0</pose>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>20</label>
+      </plugin>
+    </include>
+    <include>
+      <uri>
+        https://fuel.gazebosim.org/1.0/AndrejOrsula/models/lunar_rock6
+      </uri>
+      <pose>0.2 -0.5 0 0 0 0</pose>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>20</label>
+      </plugin>
+    </include>
+    <include>
+      <uri>
+        https://fuel.gazebosim.org/1.0/AndrejOrsula/models/lunar_rock7
+      </uri>
+      <pose>0.2 0.2 0.05 0 0 0</pose>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>20</label>
+      </plugin>
+    </include>
+    <include>
+      <uri>
+        https://fuel.gazebosim.org/1.0/AndrejOrsula/models/lunar_rock8
+      </uri>
+      <pose>0.2 0.7 0.1 0 0 0</pose>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>20</label>
+      </plugin>
+    </include>
+    <include>
+      <uri>
+        https://fuel.gazebosim.org/1.0/Gambit/models/Strawberry
+      </uri>
+      <pose>-0.11 -0.3 0 0 0 0</pose>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>30</label>
+      </plugin>
+    </include>
+    <include>
+      <name>Strawberry2</name>
+      <uri>
+        https://fuel.gazebosim.org/1.0/Gambit/models/Strawberry
+      </uri>
+      <pose>-0.09 -0.3 -0.025 0 -2.5 0</pose>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>30</label>
+      </plugin>
+    </include>
+    <include>
+      <name>Strawberry3</name>
+      <uri>
+        https://fuel.gazebosim.org/1.0/Gambit/models/Strawberry
+      </uri>
+      <pose>-0.1 -0.31 -0.05 1.5 0 2.5</pose>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>30</label>
+      </plugin>
+    </include>
+    <include>
+      <uri>
+        https://fuel.gazebosim.org/1.0/OpenRobotics/models/VisitorChair
+      </uri>
+      <pose>0.6 0.8 -0.175 0 0 -0.785</pose>
+      <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
+        <label>40</label>
+      </plugin>
+    </include>
+
+  </world>
+</sdf>

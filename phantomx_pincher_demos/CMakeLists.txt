@@ -8,14 +8,15 @@ find_package(phantomx_pincher REQUIRED)
 # Setup the project
 catkin_package()
 
-# # Install directories
-# install(DIRECTORY launch
-#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-# )
+# Install directories
+install(DIRECTORY launch worlds
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
 
 # Install Python scripts
 set(EXAMPLES_DIR examples)
 catkin_install_python(PROGRAMS
+  ${EXAMPLES_DIR}/demo_observe_scene.py
   ${EXAMPLES_DIR}/ex_cartesian_path.py
   ${EXAMPLES_DIR}/ex_collision_object.py
   ${EXAMPLES_DIR}/ex_gripper.py

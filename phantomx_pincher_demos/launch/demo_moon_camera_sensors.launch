@@ -1,0 +1,17 @@
+<!-- Demo within Gazebo to demonstrate camera sensors attached to the robot -->
+<launch>
+
+  <!-- Make the robot model discoverable by Gazebo -->
+  <env name="IGN_GAZEBO_RESOURCE_PATH" value="$(find phantomx_pincher_description)"/>
+
+  <!-- Start the MoveIt setup in Gazebo simulation without spawning the robot -->
+  <include file="$(find phantomx_pincher)/launch/gz.launch">
+    <arg name="world" value="$(find phantomx_pincher_demos)/worlds/moon_camera_sensors.sdf"/>
+    <arg name="render_engine" value="ogre2"/>
+    <arg name="spawn_robot" value="false"/>
+  </include>
+
+  <!-- Node that repeatedly moves the robot to pre-defined joint configurations -->
+  <node name="demo_observe_scene" pkg="phantomx_pincher_demos" type="demo_observe_scene.py" respawn="true"/>
+
+</launch>
