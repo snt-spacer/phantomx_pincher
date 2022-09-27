@@ -55,7 +55,7 @@ Clone this repository, import dependencies, install dependencies and build with 
 # Install essentials
 sudo apt update && sudo apt install -y git python3-catkin-tools python3-vcstool
 # Create a workspace
-mkdir -p phantomx_pincher/src && cd phantomx_pincher 
+mkdir -p phantomx_pincher/src && cd phantomx_pincher
 # Clone this repository into your favourite ROS workspace
 git clone https://github.com/snt-spacer/phantomx_pincher.git -b ros1 src/phantomx_pincher
 # Import dependencies
@@ -66,6 +66,15 @@ export IGNITION_VERSION=fortress
 rosdep install -y -r -i --rosdistro noetic --from-paths src
 # Build
 catkin build --cmake-args "-DCMAKE_BUILD_TYPE=Release"
+```
+
+#### Setup permissions for real robot
+
+By default, the USB device connected to the real robot prevents read/write access of non-`sudo` users. In order to configure these permissions automatically when you plug the device to your system, you can setup [`50-phantomx-pincher.rules`](phantomx_pincher_control/udev/50-phantomx-pincher.rules) udev rules.
+
+```bash
+sudo cp src/phantomx_pincher/phantomx_pincher_control/udev/50-phantomx-pincher.rules /etc/udev/rules.d/
+sudo udevadm control --reload-rules && udevadm trigger
 ```
 
 #### **Sourcing**
