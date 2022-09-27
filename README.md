@@ -2,12 +2,9 @@
 
 Software packages that enable manipulation with simulated and real [PhantomX Pincher Robot Arm](https://www.trossenrobotics.com/p/PhantomX-Pincher-Robot-Arm.aspx).
 
-<!-- <p align="left" float="middle">
-  <a href="">
-    <img width="50.0%" src=""/>
-  </a>
-  <em>PhantomX Pincher</em>
-</p> -->
+<p align="center" float="middle">
+  <img width="75%" src="https://user-images.githubusercontent.com/22929099/192652586-916da2f5-9c05-402c-9b39-5452676fa32d.png"/>
+</p>
 
 ## Overview
 
@@ -42,8 +39,8 @@ This repository consists of the following packages. For more detailed informatio
 
 These are the primary dependencies required to use this project. Please install them following their respective tutorial.
 
-- ROS [Noetic](http://wiki.ros.org/noetic/Installation)
-- Gazebo [Fortress](https://gazebosim.org/docs/fortress/install)
+- ROS [Noetic](http://wiki.ros.org/noetic/Installation) (e.g. [Binary installation on Ubuntu 20.04](http://wiki.ros.org/noetic/Installation/Ubuntu))
+- Gazebo [Fortress](https://gazebosim.org/docs/fortress/install) (e.g. [Binary installation on Ubuntu 20.04](https://gazebosim.org/docs/fortress/install_ubuntu))
 
 All additional dependencies are either pulled via [vcstool](https://wiki.ros.org/vcstool) ([phantomx_pincher.repos](./phantomx_pincher.repos)) or installed via [rosdep](https://wiki.ros.org/rosdep) during the building process below.
 
@@ -55,7 +52,7 @@ Clone this repository, import dependencies, install dependencies and build with 
 # Install essentials
 sudo apt update && sudo apt install -y git python3-catkin-tools python3-vcstool
 # Create a workspace
-mkdir -p phantomx_pincher/src && cd phantomx_pincher
+mkdir -p phantomx_pincher_ws/src && cd phantomx_pincher_ws
 # Clone this repository into your favourite ROS workspace
 git clone https://github.com/snt-spacer/phantomx_pincher.git -b ros1 src/phantomx_pincher
 # Import dependencies
@@ -70,7 +67,7 @@ catkin build --cmake-args "-DCMAKE_BUILD_TYPE=Release"
 
 #### Setup permissions for real robot
 
-By default, the USB device connected to the real robot prevents read/write access of non-`sudo` users. In order to configure these permissions automatically when you plug the device to your system, you can setup [`50-phantomx-pincher.rules`](phantomx_pincher_control/udev/50-phantomx-pincher.rules) udev rules.
+By default, the USB device connected to the real robot prevents read/write access of non-`sudo` users. In order to configure these permissions automatically when you plug the device into your system, you can setup the included [`50-phantomx-pincher.rules`](phantomx_pincher_control/udev/50-phantomx-pincher.rules) udev rules.
 
 ```bash
 sudo cp src/phantomx_pincher/phantomx_pincher_control/udev/50-phantomx-pincher.rules /etc/udev/rules.d/
@@ -79,7 +76,7 @@ sudo udevadm control --reload-rules && udevadm trigger
 
 #### **Sourcing**
 
-Before utilising this package, remember to source the ROS workspace.
+Before utilising this package, remember to source the ROS workspace. It can be convenient to automatically source this workspace every time a new shell is launched by placing it inside `~/.bashrc`.
 
 ```bash
 source devel/local_setup.bash
@@ -148,8 +145,8 @@ roslaunch phantomx_pincher gz.launch
 roslaunch phantomx_pincher real.launch
 ```
 
-Hereafter, you can experiment with examples of `phantomx_pincher_demos`.
+Hereafter, you can experiment with examples and investigate the included demos inside [phantomx_pincher_demos](./phantomx_pincher_demos).
 
 ```bash
-rosrun phantomx_pincher_demos ...
+rosrun phantomx_pincher_demos ex_*
 ```
