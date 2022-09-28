@@ -82,25 +82,13 @@ GUI_ENVS=(
 CUSTOM_VOLUMES+=("/etc/localtime:/etc/localtime:ro")
 
 ## Additional environment variables
-# Synchronize ROS_DOMAIN_ID with host
-if [ -n "${ROS_DOMAIN_ID}" ]; then
-    CUSTOM_ENVS+=("ROS_DOMAIN_ID=${ROS_DOMAIN_ID}")
+# Synchronize ROS_MASTER_URI with host
+if [ -n "${ROS_MASTER_URI}" ]; then
+    CUSTOM_ENVS+=("ROS_MASTER_URI=${ROS_MASTER_URI}")
 fi
 # Synchronize IGN_PARTITION with host
 if [ -n "${IGN_PARTITION}" ]; then
     CUSTOM_ENVS+=("IGN_PARTITION=${IGN_PARTITION}")
-fi
-# Synchronize RMW configuration with host
-if [ -n "${RMW_IMPLEMENTATION}" ]; then
-    CUSTOM_ENVS+=("RMW_IMPLEMENTATION=${RMW_IMPLEMENTATION}")
-fi
-if [ -n "${CYCLONEDDS_URI}" ]; then
-    CUSTOM_ENVS+=("CYCLONEDDS_URI=${CYCLONEDDS_URI}")
-    CUSTOM_VOLUMES+=("${CYCLONEDDS_URI//file:\/\//}:${CYCLONEDDS_URI//file:\/\//}:ro")
-fi
-if [ -n "${FASTRTPS_DEFAULT_PROFILES_FILE}" ]; then
-    CUSTOM_ENVS+=("FASTRTPS_DEFAULT_PROFILES_FILE=${FASTRTPS_DEFAULT_PROFILES_FILE}")
-    CUSTOM_VOLUMES+=("${FASTRTPS_DEFAULT_PROFILES_FILE}:${FASTRTPS_DEFAULT_PROFILES_FILE}:ro")
 fi
 
 DOCKER_RUN_CMD=(
