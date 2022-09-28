@@ -2,12 +2,9 @@
 
 Software packages that enable manipulation with simulated and real [PhantomX Pincher Robot Arm](https://www.trossenrobotics.com/p/PhantomX-Pincher-Robot-Arm.aspx).
 
-<!-- <p align="left" float="middle">
-  <a href="">
-    <img width="50.0%" src=""/>
-  </a>
-  <em>PhantomX Pincher</em>
-</p> -->
+<p align="center" float="middle">
+  <img width="75%" src="https://user-images.githubusercontent.com/22929099/192652586-916da2f5-9c05-402c-9b39-5452676fa32d.png"/>
+</p>
 
 ## Overview
 
@@ -52,7 +49,7 @@ Clone this repository, import dependencies, install dependencies and build with 
 
 ```bash
 # Clone this repository into your favourite ROS 2 workspace
-git clone https://github.com/AndrejOrsula/phantomx_pincher.git
+git clone https://github.com/snt-spacer/phantomx_pincher.git
 # Import dependencies
 vcs import < phantomx_pincher/phantomx_pincher.repos
 # Install dependencies

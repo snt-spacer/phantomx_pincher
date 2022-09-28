@@ -2,10 +2,9 @@
 
 URDF and SDF description of PhantomX Pincher Robot Arm.
 
-<!-- <p align="left" float="middle">
-  <img width="50.0%" src="phantomx_pincher/thumbnails/1.png"/>
-  <em>Visualisation of PhantomX Pincher</em>
-</p> -->
+<p align="left" float="middle">
+  <img width="50.0%" src="phantomx_pincher/thumbnails/0.png"/>
+</p>
 
 ## Instructions
 
