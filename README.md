@@ -79,7 +79,7 @@ sudo udevadm control --reload-rules && udevadm trigger
 Before utilising this package, remember to source the ROS workspace. It can be convenient to automatically source this workspace every time a new shell is launched by placing it inside `~/.bashrc`.
 
 ```bash
-source devel/local_setup.bash
+source devel/setup.bash
 ```
 
 This enables:
