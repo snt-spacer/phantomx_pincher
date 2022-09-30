@@ -542,7 +542,7 @@
       <uri>
         https://fuel.gazebosim.org/1.0/AndrejOrsula/models/lunar_rock8
       </uri>
-      <pose>0.2 0.7 0.1 0 0 0</pose>
+      <pose>0.2 0.6 0.05 0 0 0</pose>
       <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
         <label>20</label>
       </plugin>
@@ -561,7 +561,7 @@
       <uri>
         https://fuel.gazebosim.org/1.0/Gambit/models/Strawberry
       </uri>
-      <pose>-0.09 -0.3 -0.025 0 -2.5 0</pose>
+      <pose>-0.09 -0.28 -0.025 0 -2.5 0</pose>
       <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
         <label>30</label>
       </plugin>
@@ -571,7 +571,7 @@
       <uri>
         https://fuel.gazebosim.org/1.0/Gambit/models/Strawberry
       </uri>
-      <pose>-0.1 -0.31 -0.05 1.5 0 2.5</pose>
+      <pose>-0.1 -0.33 -0.05 1.5 0 2.5</pose>
       <plugin filename="ignition-gazebo-label-system" name="ignition::gazebo::systems::Label">
         <label>30</label>
       </plugin>

@@ -9,7 +9,7 @@ find_package(phantomx_pincher REQUIRED)
 catkin_package()
 
 # Install directories
-install(DIRECTORY launch worlds
+install(DIRECTORY launch rviz worlds
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
