@@ -22,6 +22,8 @@
   <arg name="rviz_config" default="$(find phantomx_pincher_moveit_config)/rviz/moveit.rviz"/>
   <!-- Flag to enable spawning of the robot -->
   <arg name="spawn_robot" default="true"/>
+  <!-- Delay in seconds before running the Gazebo world -->
+  <arg name="start_delay" default="0.0"/>
   <!-- Delay in seconds before spawning the robot into the Gazebo world -->
   <arg name="spawn_delay" default="1.0"/>
   <!-- Pose of the robot inside simulation-->
@@ -40,19 +42,18 @@
   <!-- Generate URDF description for the robot and store as a parameter -->
   <param name="robot_description" command="xacro name:=$(arg name) prefix:=$(arg prefix) collision:=$(arg collision) ros_control:=true ros_control_plugin:=ign ros_control_command_interface:=$(arg ros_control_command_interface) mimic_finger_joints:=$(arg mimic_finger_joints) gazebo_preserve_fixed_joint:=$(arg gazebo_preserve_fixed_joint) '$(find phantomx_pincher_description)/urdf/phantomx_pincher.urdf.xacro'"/>
   <!-- Generate SDF descriptions for the robot from xacro -->
-  <node name="xacro2sdf" pkg="phantomx_pincher_description" type="xacro2sdf.bash" args="name:=$(arg name) prefix:=$(arg prefix) collision:=$(arg collision) ros_control:=true ros_control_plugin:=ign ros_control_command_interface:=$(arg ros_control_command_interface) mimic_finger_joints:=$(arg mimic_finger_joints) gazebo_preserve_fixed_joint:=$(arg gazebo_preserve_fixed_joint)" if="$(arg spawn_robot)"/>
+  <node name="xacro2sdf" pkg="phantomx_pincher_description" type="xacro2sdf.bash" args="name:=$(arg name) prefix:=$(arg prefix) collision:=$(arg collision) ros_control:=true ros_control_plugin:=ign ros_control_command_interface:=$(arg ros_control_command_interface) mimic_finger_joints:=$(arg mimic_finger_joints) gazebo_preserve_fixed_joint:=$(arg gazebo_preserve_fixed_joint)"/>
 
   <!-- Start Gazebo -->
-  <include file="$(find ros_ign_gazebo)/launch/ign_gazebo.launch">
-    <arg name="ign_args" value="$(arg world) --render-engine $(arg render_engine) $(arg ign_args)"/>
-  </include>
+  <env name="IGN_GAZEBO_SYSTEM_PLUGIN_PATH" value="$(optenv LD_LIBRARY_PATH)"/>
+  <node name="ign_gazebo" pkg="ros_ign_gazebo" type="ign_gazebo" required="true" args="$(arg world) --render-engine $(arg render_engine) $(arg ign_args)" launch-prefix="bash -c 'sleep $(arg start_delay); $0 $@' "/>
   <!-- Insert SDF model of the robot -->
   <arg name="world_name" default="$(eval str(arg('world')).split('/')[-1].split('.')[0])"/>
   <node name="$(anon ros_ign_gazebo_create)" pkg="ros_ign_gazebo" type="create" args="-world $(arg world_name) -file $(find phantomx_pincher_description)/phantomx_pincher/model.sdf -x $(arg robot_x) -y $(arg robot_y) -z $(arg robot_z) -R $(arg robot_roll) -P $(arg robot_pitch) -Y $(arg robot_yaw)" launch-prefix="bash -c 'sleep $(arg spawn_delay); $0 $@' " if="$(arg spawn_robot)"/>
 
   <!-- Spawn controllers -->
   <rosparam file="$(find phantomx_pincher_moveit_config)/config/controllers_$(arg ros_control_command_interface).yaml" command="load"/>
-  <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen" args="joint_state_publisher joint_trajectory_controller gripper_trajectory_controller"/>
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="true" respawn_delay="10" args="joint_state_publisher joint_trajectory_controller gripper_trajectory_controller"/>
   <!-- Publish tf frames of the robot based on the current joint states -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true"/>
 

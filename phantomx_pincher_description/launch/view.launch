@@ -22,5 +22,5 @@
   <!-- Start RViZ -->
   <node name="$(anon rviz)" pkg="rviz" type="rviz" args="-d $(arg rviz_config)"/>
   <!-- Open GUI that enables publishing the joint positions -->
-  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui"/>
+  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" required="true"/>
 </launch>

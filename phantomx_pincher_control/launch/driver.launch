@@ -4,7 +4,7 @@
   <arg name="port" default="/dev/ttyUSB0"/>
 
   <!-- Run the ArbotiX driver -->
-  <node name="arbotix_driver" pkg="arbotix_python" type="arbotix_driver" clear_params="true">
+  <node name="arbotix_driver" pkg="arbotix_python" type="arbotix_driver" required="true" clear_params="true">
     <rosparam command="load" file="$(find phantomx_pincher_control)/config/phantomx_pincher.yaml"/>
     <param name="port" value="$(arg port)"/>
   </node>

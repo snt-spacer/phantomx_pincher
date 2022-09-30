@@ -12,6 +12,19 @@
   <arg name="mimic_finger_joints" default="false"/>
   <!-- Flag to preserve fixed joints and prevent lumping when generating SDF for Gazebo -->
   <arg name="gazebo_preserve_fixed_joint" default="false"/>
+  <!-- Render engine used by Gazebo (ogre or ogre2 [photorealistic]) -->
+  <arg name="render_engine" default="ogre"/>
+  <!-- Additional arguments for Gazebo -->
+  <arg name="ign_args" default="-r -v 1"/>
+  <!-- Delay in seconds before spawning the robot into the Gazebo world -->
+  <arg name="spawn_delay" default="0.0"/>
+  <!-- Pose of the robot inside simulation-->
+  <arg name="robot_x" default="0.0"/>
+  <arg name="robot_y" default="0.0"/>
+  <arg name="robot_z" default="0.0"/>
+  <arg name="robot_roll" default="0.0"/>
+  <arg name="robot_pitch" default="0.0"/>
+  <arg name="robot_yaw" default="0.0"/>
 
   <!-- Use simulated time -->
   <param name="use_sim_time" value="true"/>
@@ -22,10 +35,9 @@
   <node name="xacro2sdf" pkg="phantomx_pincher_description" type="xacro2sdf.bash" args="name:=$(arg name) prefix:=$(arg prefix) collision:=$(arg collision) ros_control:=false mimic_finger_joints:=$(arg mimic_finger_joints) gazebo_preserve_fixed_joint:=$(arg gazebo_preserve_fixed_joint)"/>
 
   <!-- Start Gazebo -->
-  <include file="$(find ros_ign_gazebo)/launch/ign_gazebo.launch">
-    <arg name="ign_args" value="$(arg world) -r -v 1"/>
-  </include>
+  <env name="IGN_GAZEBO_SYSTEM_PLUGIN_PATH" value="$(optenv LD_LIBRARY_PATH)"/>
+  <node name="ign_gazebo" pkg="ros_ign_gazebo" type="ign_gazebo" required="true" args="$(arg world) --render-engine $(arg render_engine) $(arg ign_args)"/>
   <!-- Insert SDF model of the robot -->
-  <arg name="world_name" default="$(eval str(arg('world')).split('.')[0])"/>
-  <node name="$(anon ros_ign_gazebo_create)" pkg="ros_ign_gazebo" type="create" args="-world $(arg world_name) -file $(find phantomx_pincher_description)/phantomx_pincher/model.sdf" launch-prefix="bash -c 'sleep 1; $0 $@' "/>
+  <arg name="world_name" default="$(eval str(arg('world')).split('/')[-1].split('.')[0])"/>
+  <node name="$(anon ros_ign_gazebo_create)" pkg="ros_ign_gazebo" type="create" args="-world $(arg world_name) -file $(find phantomx_pincher_description)/phantomx_pincher/model.sdf -x $(arg robot_x) -y $(arg robot_y) -z $(arg robot_z) -R $(arg robot_roll) -P $(arg robot_pitch) -Y $(arg robot_yaw)" launch-prefix="bash -c 'sleep $(arg spawn_delay); $0 $@' "/>
 </launch>

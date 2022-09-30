@@ -16,7 +16,7 @@
   <param name="robot_description" command="xacro name:=$(arg name) prefix:=$(arg prefix) ros_control:=false mimic_finger_joints:=$(arg mimic_finger_joints) '$(find phantomx_pincher_description)/urdf/phantomx_pincher.urdf.xacro'"/>
 
   <!-- Publish fake joints states -->
-  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" required="true">
     <rosparam param="source_list">[move_group/fake_controller_joint_states]</rosparam>
   </node>
   <!-- Publish tf frames of the robot based on the current joint states -->
