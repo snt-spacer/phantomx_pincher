@@ -347,7 +347,7 @@ Visualization Manager:
       Planning Scene Topic: move_group/monitored_planning_scene
       Robot Description: robot_description
       Scene Geometry:
-        Scene Alpha: 0.8999999761581421
+        Scene Alpha: 1
         Scene Color: 50; 230; 50
         Scene Display Time: 0.009999999776482582
         Show Scene Geometry: true
@@ -577,7 +577,7 @@ Visualization Manager:
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 1139
+  Height: 1080
   Hide Left Dock: false
   Hide Right Dock: true
   MotionPlanning:
@@ -594,5 +594,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1920
-  X: 1078
-  Y: 1448
+  X: 0
+  Y: 0
