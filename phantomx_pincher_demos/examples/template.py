@@ -6,9 +6,9 @@ Template for controlling PhantomX Pincher with your Python scripts.
 
 import sys
 
+import geometry_msgs.msg
 import moveit_commander
 import rospy
-import geometry_msgs.msg
 
 # Constants for adding collision geometry of the blank module cover
 MODULE_COVER_FRAME_ID = "phantomx_pincher_task_board_module_link"
