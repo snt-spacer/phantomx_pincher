@@ -27,11 +27,11 @@ def main():
     rospy.init_node("ex_collision_object", anonymous=True)
 
     # Instantiate MoveGroupCommander (interface to one group of joints)
-    group = moveit_commander.MoveGroupCommander("arm")
+    group = moveit_commander.move_group.MoveGroupCommander("arm")
 
     # Instantiate PlanningSceneInterface (interface to the world surrounding the robot)
-    scene = moveit_commander.PlanningSceneInterface()
-
+    # Make sure the PlanningSceneInterface is configured by sleeping for a second
+    scene = moveit_commander.planning_scene_interface.PlanningSceneInterface()
     rospy.sleep(1)
 
     # Get parameters for collision mesh manipulation

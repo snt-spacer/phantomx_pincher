@@ -28,7 +28,9 @@ def main():
     rospy.init_node("demo_observe_scene", anonymous=True)
 
     # Instantiate MoveGroupCommander (interface to one group of joints)
-    group = moveit_commander.MoveGroupCommander("arm", wait_for_servers=300.0)
+    group = moveit_commander.move_group.MoveGroupCommander(
+        "arm", wait_for_servers=300.0
+    )
 
     # Increase max velocity
     group.set_max_velocity_scaling_factor(0.42)

@@ -22,7 +22,7 @@ def main():
     rospy.init_node("ex_gripper", anonymous=True)
 
     # Instantiate MoveGroupCommander (interface to one group of joints)
-    group = moveit_commander.MoveGroupCommander("gripper")
+    group = moveit_commander.move_group.MoveGroupCommander("gripper")
 
     # Get parameter for gripper action
     action = rospy.get_param("~action", default="toggle")

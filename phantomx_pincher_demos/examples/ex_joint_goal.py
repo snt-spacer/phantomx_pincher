@@ -21,7 +21,7 @@ def main():
     rospy.init_node("ex_joint_goal", anonymous=True)
 
     # Instantiate MoveGroupCommander (interface to one group of joints)
-    group = moveit_commander.MoveGroupCommander("arm")
+    group = moveit_commander.move_group.MoveGroupCommander("arm")
 
     # Get parameter for joint positions
     joint_position_goal = rospy.get_param(

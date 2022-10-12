@@ -23,10 +23,10 @@ def main():
     rospy.init_node("ex_cartesian_path", anonymous=True)
 
     # Instantiate RobotCommander (outer-level interface to the robot)
-    robot = moveit_commander.RobotCommander()
+    robot = moveit_commander.robot.RobotCommander()
 
     # Instantiate MoveGroupCommander (interface to one group of joints)
-    group = moveit_commander.MoveGroupCommander("arm")
+    group = moveit_commander.move_group.MoveGroupCommander("arm")
 
     # Create DisplayTrajectory publisher used to publish trajectories for RViz to visualize
     display_trajectory_publisher = rospy.Publisher(
