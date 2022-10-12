@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <sdf version="1.9">
-  <world name="moon">
+  <world name="moon_camera_sensors">
 
     <!-- Physics -->
     <plugin filename="ignition-gazebo-physics-system" name="ignition::gazebo::systems::Physics"/>
@@ -15,7 +15,6 @@
     <!-- Scene -->
     <scene>
       <ambient>0 0 0</ambient>
-      <!-- <ambient_light>0 0 0</ambient_light> -->
       <grid>false</grid>
     </scene>
 
