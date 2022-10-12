@@ -56,6 +56,9 @@ def main():
     waypoints = []
     waypoints.append(copy.deepcopy(pose_goal))
 
+    # Decrease maximum Cartesian speed
+    group.limit_max_cartesian_link_speed(0.025)
+
     # Generate Cartesian path via interpolation at a resolution of 5 mm
     (plan, fraction) = group.compute_cartesian_path(waypoints, 0.005, 0.0)
 
@@ -70,7 +73,7 @@ def main():
     display_trajectory.trajectory.append(plan)
     display_trajectory_publisher.publish(display_trajectory)
 
-    # Plan and execute the motion (wait until completion)
+    # Execute the motion (wait until completion)
     group.execute(plan, wait=True)
 
     # Ensure that there is no residual movement
