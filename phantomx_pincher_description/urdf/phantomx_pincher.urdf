@@ -39,6 +39,13 @@
     <mu1 value="1.0"/>
     <mu2 value="1.0"/>
   </gazebo>
+  <link name="phantomx_pincher_task_board_module_link">
+  </link>
+  <joint name="phantomx_pincher_task_board_module_link_virtual_joint" type="fixed">
+    <parent link="phantomx_pincher_task_board_link"/>
+    <child link="phantomx_pincher_task_board_module_link"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.075 0.0 0.024"/>
+  </joint>
   <joint name="phantomx_pincher_task_board_mount_fixed_joint" type="fixed">
     <parent link="phantomx_pincher_task_board_mount_link"/>
     <child link="phantomx_pincher_base_mount_link"/>

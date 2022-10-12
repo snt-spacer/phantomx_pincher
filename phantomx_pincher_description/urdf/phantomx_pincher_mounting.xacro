@@ -65,6 +65,9 @@
   <xacro:property name="task_board_link_mu" value="1.0"/>
   <xacro:property name="task_board_link_mesh" value="task_board"/>
   <xacro:property name="task_board_link_collision_type" value="mesh"/>
+  <xacro:property name="task_board_module_joint_origin_xyz" value="0.075 0.0 0.024"/>
+  <xacro:property name="task_board_module_joint_origin_rpy" value="0.0 0.0 0.0"/>
+  <xacro:property name="task_board_module_link_name" value="task_board_module_link"/>
   <xacro:macro name="task_board" params="
     prefix
     child
@@ -73,6 +76,8 @@
   ">
     <xacro:phantomx_pincher_joint parent="${prefix}${task_board_link_name}" child="${prefix}${child}" joint_name="${prefix}${task_board_joint_name}" joint_type="${task_board_joint_type}" joint_origin_xyz="${task_board_joint_origin_xyz}" joint_origin_rpy="${task_board_joint_origin_rpy}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
     <xacro:phantomx_pincher_link link_name="${prefix}${task_board_link_name}" mesh="${task_board_link_mesh}" collision="${collision}" collision_type="${task_board_link_collision_type}" mu="${task_board_link_mu}"/>
+
+    <xacro:phantomx_pincher_virtual_link parent="${prefix}${task_board_link_name}" link_name="${prefix}${task_board_module_link_name}" joint_origin_xyz="${task_board_module_joint_origin_xyz}" joint_origin_rpy="${task_board_module_joint_origin_rpy}" gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"/>
   </xacro:macro>
 
 </robot>
