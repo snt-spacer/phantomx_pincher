@@ -19,6 +19,8 @@
   <include file="$(find phantomx_pincher_control)/launch/driver.launch">
     <arg name="port" value="$(arg port)"/>
   </include>
+  <!-- Publish tf frames of the robot based on the current joint states -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true"/>
 
   <!-- Launch move_group of MoveIt to enable motion planning -->
   <arg name="pipeline" default="ompl"/>
