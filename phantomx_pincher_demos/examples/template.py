@@ -32,9 +32,9 @@ def main():
     gripper = moveit_commander.move_group.MoveGroupCommander("gripper")
 
     # Instantiate PlanningSceneInterface (interface to the world surrounding the robot)
-    # Make sure the PlanningSceneInterface is configured by sleeping for a second
-    scene = moveit_commander.planning_scene_interface.PlanningSceneInterface()
-    rospy.sleep(1)
+    scene = moveit_commander.planning_scene_interface.PlanningSceneInterface(
+        synchronous=True
+    )
 
     ##
     # TODO: Make your changes here (setup the scene, then plan and execute motions)
