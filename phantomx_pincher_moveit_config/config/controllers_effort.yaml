@@ -38,12 +38,12 @@ gripper_trajectory_controller:
     - phantomx_pincher_gripper_finger2_joint
   gains:
     phantomx_pincher_gripper_finger1_joint:
-      p: 75.0
-      d: 0.001
-      i: 100.0
-      i_clamp: 10.0
+      p: 500.0
+      d: 0.01
+      i: 0.5
+      i_clamp: 2.0
     phantomx_pincher_gripper_finger2_joint:
-      p: 75.0
-      d: 0.001
-      i: 100.0
-      i_clamp: 10.0
+      p: 500.0
+      d: 0.01
+      i: 0.5
+      i_clamp: 2.0
