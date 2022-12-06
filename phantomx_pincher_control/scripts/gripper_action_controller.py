@@ -45,7 +45,7 @@ class GripperController:
         self.min_opening = rospy.get_param("~min_opening", 0.0)
         self.max_opening = rospy.get_param("~max_opening", 0.0316)
         self.joint = rospy.get_param("~joint", "gripper_finger1_joint")
-        self.velocity_history_queue = rospy.get_param("~velocity_history_queue", 5)
+        self.velocity_history_queue = rospy.get_param("~velocity_history_queue", 20)
 
         self.command_pub = rospy.Publisher(
             self.joint + "/command", Float64, queue_size=5
@@ -99,12 +99,15 @@ class GripperController:
                 rospy.loginfo("Gripper Controller: Succeeded.")
                 return
 
-            if self.velocity_history_queue == len(self.velocity_history):
+            if (
+                self.velocity_history_queue == len(self.velocity_history)
+                and self.position > command.position
+            ):
                 if abs(mean(self.velocity_history)) < self.tolerance:
                     if self.position > command.position:
-                        self.command_pub.publish(self.position - self.tolerance)
+                        self.command_pub.publish(self.position - 2 * self.tolerance)
                     else:
-                        self.command_pub.publish(self.position + self.tolerance)
+                        self.command_pub.publish(self.position + 2 * self.tolerance)
 
                     self.server.set_succeeded()
                     rospy.logwarn(
