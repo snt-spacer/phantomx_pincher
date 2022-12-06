@@ -8,7 +8,7 @@
   <xacro:macro name="phantomx_pincher" params="prefix:=${prefix}">
 
     <group name="arm">
-      <chain base_link="${prefix}base_link" tip_link="${prefix}end_effector"/>
+      <chain base_link="${prefix}arm_base_link" tip_link="${prefix}end_effector"/>
     </group>
     <group name="gripper">
       <joint name="${prefix}gripper_finger1_joint"/>
