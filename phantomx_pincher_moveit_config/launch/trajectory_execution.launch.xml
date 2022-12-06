@@ -16,7 +16,7 @@
   <param name="trajectory_execution/allowed_goal_duration_margin" value="0.5"/>
   <!-- default 0.5 -->
   <!-- Allowed joint-value tolerance for validation that trajectory's first point matches current robot state -->
-  <param name="trajectory_execution/allowed_start_tolerance" value="0.01"/>
+  <param name="trajectory_execution/allowed_start_tolerance" value="0.1"/>
   <!-- default 0.01 -->
 
   <!-- We use pass_all_args=true here to pass fake_execution_type, which is required by fake controllers, but not by real-robot controllers.
