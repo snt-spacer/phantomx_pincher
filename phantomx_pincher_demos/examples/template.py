@@ -41,7 +41,8 @@ def main():
     ##
 
     # Ensure that there is no residual movement
-    arm.stop()
+    if not rospy.is_shutdown():
+        arm.stop()
 
     # Shutdown MoveIt Commander and exit
     moveit_commander.roscpp_shutdown()
