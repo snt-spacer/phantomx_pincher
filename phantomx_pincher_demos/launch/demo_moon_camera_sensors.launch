@@ -19,6 +19,6 @@
   <node name="$(anon static_transform_publisher)" pkg="tf2_ros" type="static_transform_publisher" args="0.05 0 -0.025 0 -1.5708 3.14159 phantomx_pincher_end_effector camera/camera_link/rgbd_camera"/>
 
   <!-- Node that repeatedly moves the robot to pre-defined joint configurations -->
-  <node name="demo_observe_scene" pkg="phantomx_pincher_demos" type="demo_observe_scene.py" respawn="true" respawn_delay="15"/>
+  <node name="demo_observe_scene" pkg="phantomx_pincher_demos" type="demo_observe_scene.py"/>
 
 </launch>
