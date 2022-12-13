@@ -49,6 +49,9 @@ RUN rosdep update && \
     catkin build --cmake-args "-DCMAKE_BUILD_TYPE=Release" && \
     rm -rf ${WS_LOGS_DIR}
 
+### Download SDF models
+RUN ${WS_SRC_DIR}/phantomx_pincher/.docker/utils/download_sdf_models.bash
+
 ### Add workspace to the ROS entrypoint
 RUN sed -i '$i source "${WS_DEVEL_DIR}/setup.bash" --' /ros_entrypoint.sh && \
     ### Disable `set -e` from the ROS entrypoint
