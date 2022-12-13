@@ -1,0 +1,416 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <world name="rover_peg_in_hole">
+
+    <!-- Physics -->
+    <plugin filename="ignition-gazebo-physics-system" name="ignition::gazebo::systems::Physics"/>
+    <physics name="dart_physics" type="dart">
+      <max_step_size>0.002</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <!-- Mars gravity -->
+    <gravity>0.0 0.0 -3.721</gravity>
+
+    <!-- Scene -->
+    <scene>
+      <ambient>0 0 0</ambient>
+      <grid>false</grid>
+    </scene>
+
+    <!-- World plugins -->
+    <plugin filename="ignition-gazebo-user-commands-system" name="ignition::gazebo::systems::UserCommands"/>
+    <plugin filename="ignition-gazebo-scene-broadcaster-system" name="ignition::gazebo::systems::SceneBroadcaster"/>
+
+    <!--             -->
+    <!-- GUI plugins -->
+    <!--             -->
+    <gui fullscreen="0">
+      <!-- 3D scene -->
+      <plugin filename="MinimalScene" name="3D View">
+        <ignition-gui>
+          <title>3D View</title>
+          <property type="bool" key="showTitleBar">false</property>
+          <property type="string" key="state">docked</property>
+        </ignition-gui>
+
+        <engine>ogre</engine>
+        <scene>scene</scene>
+        <ambient_light>0 0 0</ambient_light>
+        <background_color>0 0 0</background_color>
+        <camera_pose>-0.7 0.25 0.8 0 0.5 -0.785</camera_pose>
+      </plugin>
+
+      <!-- Plugins that add functionality to the scene -->
+      <plugin filename="EntityContextMenuPlugin" name="Entity context menu">
+        <ignition-gui>
+          <property key="state" type="string">floating</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </ignition-gui>
+      </plugin>
+      <plugin filename="GzSceneManager" name="Scene Manager">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </ignition-gui>
+      </plugin>
+      <plugin filename="InteractiveViewControl" name="Interactive view control">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </ignition-gui>
+      </plugin>
+      <plugin filename="CameraTracking" name="Camera Tracking">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </ignition-gui>
+      </plugin>
+      <plugin filename="MarkerManager" name="Marker manager">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </ignition-gui>
+      </plugin>
+      <plugin filename="SelectEntities" name="Select Entities">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </ignition-gui>
+      </plugin>
+
+      <plugin filename="Spawn" name="Spawn Entities">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </ignition-gui>
+      </plugin>
+
+      <plugin filename="VisualizationCapabilities" name="Visualization Capabilities">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </ignition-gui>
+      </plugin>
+
+      <!-- World control -->
+      <plugin filename="WorldControl" name="World control">
+        <ignition-gui>
+          <title>World control</title>
+          <property type="bool" key="showTitleBar">false</property>
+          <property type="bool" key="resizable">false</property>
+          <property type="double" key="height">72</property>
+          <property type="double" key="width">121</property>
+          <property type="double" key="z">1</property>
+
+          <property type="string" key="state">floating</property>
+          <anchors target="3D View">
+            <line own="left" target="left"/>
+            <line own="bottom" target="bottom"/>
+          </anchors>
+        </ignition-gui>
+
+        <play_pause>true</play_pause>
+        <step>true</step>
+        <start_paused>true</start_paused>
+        <use_event>true</use_event>
+      </plugin>
+
+      <!-- World statistics -->
+      <plugin filename="WorldStats" name="World stats">
+        <ignition-gui>
+          <title>World stats</title>
+          <property type="bool" key="showTitleBar">false</property>
+          <property type="bool" key="resizable">false</property>
+          <property type="double" key="height">110</property>
+          <property type="double" key="width">290</property>
+          <property type="double" key="z">1</property>
+
+          <property type="string" key="state">floating</property>
+          <anchors target="3D View">
+            <line own="right" target="right"/>
+            <line own="bottom" target="bottom"/>
+          </anchors>
+        </ignition-gui>
+
+        <sim_time>true</sim_time>
+        <real_time>true</real_time>
+        <real_time_factor>true</real_time_factor>
+        <iterations>true</iterations>
+      </plugin>
+
+      <!-- Insert simple shapes -->
+      <plugin filename="Shapes" name="Shapes">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="x" type="double">0</property>
+          <property key="y" type="double">0</property>
+          <property key="width" type="double">250</property>
+          <property key="height" type="double">50</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+          <property key="cardBackground" type="string">#666666</property>
+        </ignition-gui>
+      </plugin>
+
+      <!-- Insert lights -->
+      <plugin filename="Lights" name="Lights">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="x" type="double">250</property>
+          <property key="y" type="double">0</property>
+          <property key="width" type="double">150</property>
+          <property key="height" type="double">50</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+          <property key="cardBackground" type="string">#666666</property>
+        </ignition-gui>
+      </plugin>
+
+      <!-- Translate / rotate -->
+      <plugin filename="TransformControl" name="Transform control">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="x" type="double">0</property>
+          <property key="y" type="double">50</property>
+          <property key="width" type="double">250</property>
+          <property key="height" type="double">50</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+          <property key="cardBackground" type="string">#777777</property>
+        </ignition-gui>
+      </plugin>
+
+      <!-- Screenshot -->
+      <plugin filename="Screenshot" name="Screenshot">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="x" type="double">250</property>
+          <property key="y" type="double">50</property>
+          <property key="width" type="double">50</property>
+          <property key="height" type="double">50</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+          <property key="cardBackground" type="string">#777777</property>
+        </ignition-gui>
+      </plugin>
+
+      <!-- Copy/Paste -->
+      <plugin filename="CopyPaste" name="CopyPaste">
+        <ignition-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="x" type="double">300</property>
+          <property key="y" type="double">50</property>
+          <property key="width" type="double">100</property>
+          <property key="height" type="double">50</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+          <property key="cardBackground" type="string">#777777</property>
+        </ignition-gui>
+      </plugin>
+    </gui>
+
+    <!--              -->
+    <!-- Illumination -->
+    <!--              -->
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>2.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>0.25 -0.5 -0.5</direction>
+    </light>
+
+    <!--        -->
+    <!-- Models -->
+    <!--        -->
+    <!-- Terrain -->
+    <model name="ground">
+      <static>true</static>
+      <link name="ground_link">
+        <collision name="ground_collision">
+          <geometry>
+            <plane>
+              <size>2.0 2.0</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="ground_visual">
+          <geometry>
+            <plane>
+              <size>2.0 2.0</size>
+            </plane>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Rover -->
+    <include>
+      <pose>0 0 0.0 0 0 1.5708</pose>
+      <static>false</static>
+      <!-- TODO: Inertial parameters need to be fixed -->
+      <uri>
+        https://fuel.gazebosim.org/1.0/OpenRobotics/models/Mars Rover
+      </uri>
+      <plugin filename="ignition-gazebo-detachable-joint-system" name="ignition::gazebo::systems::DetachableJoint">
+        <parent_link>link</parent_link>
+        <child_model>phantomx_pincher</child_model>
+        <child_link>phantomx_pincher_base_link</child_link>
+      </plugin>
+    </include>
+
+    <!-- Robot -->
+    <include>
+      <pose>-0.35 0 0.485 0 0 3.1416</pose>
+      <uri>
+        model://phantomx_pincher
+      </uri>
+      <plugin filename="ignition-gazebo-detachable-joint-system" name="ignition::gazebo::systems::DetachableJoint">
+        <parent_link>phantomx_pincher_base_link</parent_link>
+        <child_model>module_cover</child_model>
+        <child_link>module_cover_link</child_link>
+      </plugin>
+    </include>
+
+    <!-- Module cover -->
+    <model name="module_cover">
+      <pose relative_to="phantomx_pincher">0.075 0 0.024 0 0 0</pose>
+      <link name="module_cover_link">
+        <collision name="module_cover_collision">
+          <geometry>
+            <mesh>
+              <uri>../examples/assets/module_holes.stl</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name="module_cover_visual">
+          <geometry>
+            <mesh>
+              <uri>../examples/assets/module_holes.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <diffuse>1.0 1.0 1.0</diffuse>
+            <specular>0.1 0.1 0.1</specular>
+          </material>
+        </visual>
+        <inertial>
+          <pose>0.0 0.0 -0.005 0 0 0</pose>
+          <mass>0.04</mass>
+          <inertia>
+            <ixx>0.00000866667</ixx>
+            <iyy>0.00007334667</iyy>
+            <izz>0.00008134667</izz>
+            <ixy>0.0</ixy>
+            <ixz>0.0</ixz>
+            <iyz>0.0</iyz>
+          </inertia>
+        </inertial>
+      </link>
+    </model>
+
+    <!-- Pegs -->
+    <model name="peg1">
+      <static>false</static>
+      <pose relative_to="phantomx_pincher">0.075 0.05 0.047 0 0 0</pose>
+      <link name="peg1_link">
+        <collision name="peg1_collision">
+          <geometry>
+            <cylinder>
+              <length>0.04</length>
+              <radius>0.0125</radius>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="peg1_visual">
+          <geometry>
+            <cylinder>
+              <length>0.04</length>
+              <radius>0.0125</radius>
+            </cylinder>
+          </geometry>
+          <material>
+            <diffuse>0 0.8 0</diffuse>
+            <specular>0.2 0.2 0.2</specular>
+          </material>
+        </visual>
+        <inertial>
+          <mass>0.015</mass>
+          <inertia>
+            <ixx>0.0000025859375</ixx>
+            <iyy>0.0000025859375</iyy>
+            <izz>0.0000011718750</izz>
+            <ixy>0.0</ixy>
+            <ixz>0.0</ixz>
+            <iyz>0.0</iyz>
+          </inertia>
+        </inertial>
+      </link>
+    </model>
+    <model name="peg2">
+      <static>false</static>
+      <pose relative_to="phantomx_pincher">0.1 -0.05 0.052 0 0 -0.32175</pose>
+      <link name="peg2_link">
+        <collision name="peg2_collision">
+          <geometry>
+            <box>
+              <size>0.025 0.025 0.05</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="peg2_visual">
+          <geometry>
+            <box>
+              <size>0.025 0.025 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>0 0 0.8</diffuse>
+            <specular>0.2 0.2 0.2</specular>
+          </material>
+        </visual>
+        <inertial>
+          <mass>0.02</mass>
+          <inertia>
+            <ixx>0.00000520833</ixx>
+            <iyy>0.00000520833</iyy>
+            <izz>0.00000208333</izz>
+            <ixy>0.0</ixy>
+            <ixz>0.0</ixz>
+            <iyz>0.0</iyz>
+          </inertia>
+        </inertial>
+      </link>
+    </model>
+  </world>
+</sdf>
