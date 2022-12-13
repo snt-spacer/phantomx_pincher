@@ -17,6 +17,7 @@ install(DIRECTORY launch rviz worlds
 set(EXAMPLES_DIR examples)
 catkin_install_python(PROGRAMS
   ${EXAMPLES_DIR}/demo_observe_scene.py
+  ${EXAMPLES_DIR}/demo_pick_and_place.py
   ${EXAMPLES_DIR}/ex_cartesian_path.py
   ${EXAMPLES_DIR}/ex_collision_object.py
   ${EXAMPLES_DIR}/ex_gripper.py
