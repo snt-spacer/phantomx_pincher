@@ -13,7 +13,7 @@ if [[ ! -x "$(command -v docker)" ]]; then
 fi
 
 # Install support for NVIDIA (Container Toolkit or Docker depending on Docker version)
-LS_HW_DISPLAY=$(lshw -short -C display 2> /dev/null | grep display)
+LS_HW_DISPLAY=$(lshw -C display 2> /dev/null | grep vendor)
 if [[ ${LS_HW_DISPLAY^^} =~ NVIDIA ]]; then
     echo "Installling Docker runtime for NVIDIA GPUs..."
     wget https://nvidia.github.io/nvidia-docker/gpgkey -O - -o /dev/null | sudo apt-key add - && wget "https://nvidia.github.io/nvidia-docker/$(source /etc/os-release && echo "${ID}${VERSION_ID}")/nvidia-docker.list" -O - -o /dev/null | sed "s#deb https://#deb [arch=$(dpkg --print-architecture)] https://#g" | sudo tee /etc/apt/sources.list.d/nvidia-docker.list >/dev/null
