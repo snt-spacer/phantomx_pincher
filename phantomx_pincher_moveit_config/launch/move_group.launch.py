@@ -21,7 +21,6 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
-
     # Declare all launch arguments
     declared_arguments = generate_declared_arguments()
 
@@ -100,6 +99,20 @@ def generate_launch_description():
             " ",
             "prefix:=",
             prefix,
+            " ",
+            "use_real_gripper:=",
+            PythonExpression(
+                [
+                    "bool('",
+                    ros2_control,
+                    "') and ",
+                    "'",
+                    ros2_control_plugin,
+                    "'",
+                    " == ",
+                    "'real'",
+                ]
+            ),
         ]
     )
     robot_description_semantic = {
@@ -403,7 +416,7 @@ def generate_declared_arguments() -> List[DeclareLaunchArgument]:
         # Servo
         DeclareLaunchArgument(
             "enable_servo",
-            default_value="false",
+            default_value="true",
             description="Flag to enable MoveIt2 Servo for manipulator.",
         ),
         # Miscellaneous

@@ -12,6 +12,7 @@ from launch.actions import (
     IncludeLaunchDescription,
     RegisterEventHandler,
 )
+from launch.conditions import IfCondition
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import (
@@ -24,7 +25,6 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description() -> LaunchDescription:
-
     # Declare all launch arguments
     declared_arguments = generate_declared_arguments()
 
@@ -32,6 +32,7 @@ def generate_launch_description() -> LaunchDescription:
     description_package = LaunchConfiguration("description_package")
     sdf_model_filepath = LaunchConfiguration("sdf_model_filepath")
     world = LaunchConfiguration("world")
+    spawn_robot = LaunchConfiguration("spawn_robot")
     name = LaunchConfiguration("name")
     prefix = LaunchConfiguration("prefix")
     collision = LaunchConfiguration("collision")
@@ -44,48 +45,6 @@ def generate_launch_description() -> LaunchDescription:
     use_sim_time = LaunchConfiguration("use_sim_time")
     ign_verbosity = LaunchConfiguration("ign_verbosity")
     log_level = LaunchConfiguration("log_level")
-
-    # List of included launch descriptions
-    launch_descriptions = [
-        # Launch Ignition Gazebo
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                PathJoinSubstitution(
-                    [
-                        FindPackageShare("ros_ign_gazebo"),
-                        "launch",
-                        "ign_gazebo.launch.py",
-                    ]
-                )
-            ),
-            launch_arguments=[("ign_args", [world, " -r -v ", ign_verbosity])],
-        ),
-        # Launch move_group of MoveIt 2
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                PathJoinSubstitution(
-                    [
-                        FindPackageShare("phantomx_pincher_moveit_config"),
-                        "launch",
-                        "move_group.launch.py",
-                    ]
-                )
-            ),
-            launch_arguments=[
-                ("name:=", name),
-                ("prefix:=", prefix),
-                ("collision:=", collision),
-                ("ros2_control", "true"),
-                ("ros2_control_plugin", "ign"),
-                ("ros2_control_interface", ros2_control_command_interface),
-                ("mimic_finger_joints", mimic_finger_joints),
-                ("gazebo_preserve_fixed_joint", gazebo_preserve_fixed_joint),
-                ("rviz_config", rviz_config),
-                ("use_sim_time", use_sim_time),
-                ("log_level", log_level),
-            ],
-        ),
-    ]
 
     # List of processes to be executed
     # xacro2sdf
@@ -107,6 +66,60 @@ def generate_launch_description() -> LaunchDescription:
         shell=True,
     )
     processes = [xacro2sdf]
+
+    # List of included launch descriptions
+    launch_descriptions = [
+        RegisterEventHandler(
+            OnProcessExit(
+                target_action=xacro2sdf,
+                on_exit=[
+                    # Launch Ignition Gazebo
+                    IncludeLaunchDescription(
+                        PythonLaunchDescriptionSource(
+                            PathJoinSubstitution(
+                                [
+                                    FindPackageShare("ros_ign_gazebo"),
+                                    "launch",
+                                    "ign_gazebo.launch.py",
+                                ]
+                            )
+                        ),
+                        launch_arguments=[
+                            ("ign_args", [world, " -r -v ", ign_verbosity])
+                        ],
+                    ),
+                    # Launch move_group of MoveIt 2
+                    IncludeLaunchDescription(
+                        PythonLaunchDescriptionSource(
+                            PathJoinSubstitution(
+                                [
+                                    FindPackageShare("phantomx_pincher_moveit_config"),
+                                    "launch",
+                                    "move_group.launch.py",
+                                ]
+                            )
+                        ),
+                        launch_arguments=[
+                            ("name:=", name),
+                            ("prefix:=", prefix),
+                            ("collision:=", collision),
+                            ("ros2_control", "true"),
+                            ("ros2_control_plugin", "ign"),
+                            ("ros2_control_interface", ros2_control_command_interface),
+                            ("mimic_finger_joints", mimic_finger_joints),
+                            (
+                                "gazebo_preserve_fixed_joint",
+                                gazebo_preserve_fixed_joint,
+                            ),
+                            ("rviz_config", rviz_config),
+                            ("use_sim_time", use_sim_time),
+                            ("log_level", log_level),
+                        ],
+                    ),
+                ],
+            )
+        ),
+    ]
 
     # List of nodes to be launched
     nodes = [
@@ -132,27 +145,28 @@ def generate_launch_description() -> LaunchDescription:
                             log_level,
                         ],
                         parameters=[{"use_sim_time": use_sim_time}],
-                    )
+                        condition=IfCondition(spawn_robot),
+                    ),
+                    # ros_ign_bridge (clock -> ROS 2)
+                    Node(
+                        package="ros_ign_bridge",
+                        executable="parameter_bridge",
+                        output="log",
+                        arguments=[
+                            "/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock",
+                            "--ros-args",
+                            "--log-level",
+                            log_level,
+                        ],
+                        parameters=[{"use_sim_time": use_sim_time}],
+                    ),
                 ],
             )
-        ),
-        # ros_ign_bridge (clock -> ROS 2)
-        Node(
-            package="ros_ign_bridge",
-            executable="parameter_bridge",
-            output="log",
-            arguments=[
-                "/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock",
-                "--ros-args",
-                "--log-level",
-                log_level,
-            ],
-            parameters=[{"use_sim_time": use_sim_time}],
         ),
     ]
 
     return LaunchDescription(
-        declared_arguments + launch_descriptions + processes + nodes
+        declared_arguments + processes + launch_descriptions + nodes
     )
 
 
@@ -178,6 +192,11 @@ def generate_declared_arguments() -> List[DeclareLaunchArgument]:
             "world",
             default_value="default.sdf",
             description="Name or filepath of the Gazebo world to load.",
+        ),
+        DeclareLaunchArgument(
+            "spawn_robot",
+            default_value="true",
+            description="Flag to enable spawning of the robot.",
         ),
         # Naming of the robot
         DeclareLaunchArgument(
