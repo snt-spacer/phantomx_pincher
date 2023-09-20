@@ -23,7 +23,6 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description() -> LaunchDescription:
-
     # Declare all launch arguments
     declared_arguments = generate_declared_arguments()
 
@@ -53,7 +52,7 @@ def generate_launch_description() -> LaunchDescription:
                     ]
                 )
             ),
-            launch_arguments=[("ign_args", [world, " -r -v ", ign_verbosity])],
+            launch_arguments=[("gz_args", [world, " -r -v ", ign_verbosity])],
         ),
     ]
 

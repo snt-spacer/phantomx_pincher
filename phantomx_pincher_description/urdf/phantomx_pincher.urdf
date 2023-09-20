@@ -39,6 +39,13 @@
     <mu1 value="1.0"/>
     <mu2 value="1.0"/>
   </gazebo>
+  <link name="phantomx_pincher_task_board_module_link">
+  </link>
+  <joint name="phantomx_pincher_task_board_module_link_virtual_joint" type="fixed">
+    <parent link="phantomx_pincher_task_board_link"/>
+    <child link="phantomx_pincher_task_board_module_link"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.075 0.0 0.024"/>
+  </joint>
   <joint name="phantomx_pincher_task_board_mount_fixed_joint" type="fixed">
     <parent link="phantomx_pincher_task_board_mount_link"/>
     <child link="phantomx_pincher_base_mount_link"/>
@@ -736,7 +743,7 @@
   </joint>
   <ros2_control name="phantomx_pincher_ros2_control_system" type="system">
     <hardware>
-      <plugin>fake_components/GenericSystem</plugin>
+      <plugin>ign_ros2_control/IgnitionSystem</plugin>
     </hardware>
     <joint name="phantomx_pincher_arm_shoulder_pan_joint">
       <param name="initial_position">0.0</param>
@@ -781,4 +788,9 @@
       <state_interface name="effort"/>
     </joint>
   </ros2_control>
+  <gazebo>
+    <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+      <parameters>/root/ws/install/share/phantomx_pincher_moveit_config/config/controllers_position.yaml</parameters>
+    </plugin>
+  </gazebo>
 </robot>

@@ -947,5 +947,9 @@
         </geometry>
       </visual>
     </link>
+    <static>false</static>
+    <plugin name='ign_ros2_control::IgnitionROS2ControlPlugin' filename='ign_ros2_control-system'>
+      <parameters>/root/ws/install/share/phantomx_pincher_moveit_config/config/controllers_effort.yaml</parameters>
+    </plugin>
   </model>
 </sdf>
