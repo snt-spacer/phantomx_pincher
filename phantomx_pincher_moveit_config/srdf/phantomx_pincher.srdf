@@ -6,7 +6,7 @@
 <!-- SRDF for PhantomX Pincher Robot Arm -->
 <robot name="phantomx_pincher">
   <group name="arm">
-    <chain base_link="phantomx_pincher_base_link" tip_link="phantomx_pincher_end_effector"/>
+    <chain base_link="phantomx_pincher_arm_base_link" tip_link="phantomx_pincher_end_effector"/>
   </group>
   <group name="gripper">
     <joint name="phantomx_pincher_gripper_finger1_joint"/>

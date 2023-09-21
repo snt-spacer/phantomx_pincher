@@ -5,21 +5,24 @@
   <!--                   -->
   <!-- Imported elements -->
   <!--                   -->
-  <xacro:include filename="$(find phantomx_pincher_moveit_config)/srdf/phantomx_pincher.xacro"/>
+  <xacro:include filename="$(find phantomx_pincher_moveit_config)/srdf/phantomx_pincher.xacro" />
 
 
   <!--            -->
   <!-- Parameters -->
   <!--            -->
   <!-- Name of the robot (mandatory) -->
-  <xacro:arg name="name" default="phantomx_pincher"/>
+  <xacro:arg name="name" default="phantomx_pincher" />
   <!-- Prefix for all entities -->
-  <xacro:arg name="prefix" default="$(arg name)_"/>
+  <xacro:arg name="prefix" default="$(arg name)_" />
+
+  <!-- Prefix for all entities -->
+  <xacro:arg name="use_real_gripper" default="true" />
 
 
   <!--       -->
   <!-- Robot -->
   <!--       -->
-  <xacro:phantomx_pincher prefix="$(arg prefix)"/>
+  <xacro:phantomx_pincher prefix="$(arg prefix)" use_real_gripper="$(arg use_real_gripper)" />
 
 </robot>
