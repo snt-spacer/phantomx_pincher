@@ -1,0 +1,79 @@
+version: "3"
+
+services:
+  phantomx_pincher:
+    container_name: phantomx_pincher
+    image: andrejorsula/phantomx_pincher
+    build:
+      context: .
+    volumes:
+      # Workspace
+      - ".:/root/ws/src/phantomx_pincher"
+      # Local time
+      - "/etc/localtime:/etc/localtime:ro"
+      # Input devices
+      - "/dev/input:/dev/input"
+      # GUI (X11)
+      - "/tmp/.X11-unix:/tmp/.X11-unix"
+      - "${XAUTHORITY}:${XAUTHORITY}"
+    environment:
+      # GUI (X11)
+      DISPLAY: ${DISPLAY}
+      XAUTHORITY: ${XAUTHORITY}
+      # NVIDIA GPU
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: all
+      # Isolate ROS 2 communication
+      ROS_LOCALHOST_ONLY: 1
+    # Other GPUs
+    devices:
+      - "/dev/dri:/dev/dri"
+    group_add:
+      - video
+    # Enable tty
+    tty: true
+    # Network mode
+    network_mode: host
+    ipc: host
+    # NVIDIA GPU
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+    command: ros2 launch phantomx_pincher_moveit_config move_group_external_control.launch.py
+    depends_on:
+      - ros1_bridge
+
+  # Bridge between ROS 1 controller and ROS 2
+  ros1_bridge:
+    container_name: ros1_bridge
+    image: andrejorsula/ros1_bridge:galactic_action_bridge
+    environment:
+      # Isolate ROS 2 communication
+      ROS_LOCALHOST_ONLY: 1
+    # Enable tty
+    tty: true
+    # Network mode
+    network_mode: host
+    ipc: host
+    # Override command
+    command: ./ros_control_bridge.bash
+    depends_on:
+      - ros1_controller
+
+  # Controller for the real robot (ROS 1)
+  ros1_controller:
+    container_name: ros1_controller
+    image: andrejorsula/phantomx_pincher:ros1
+    # Hardware access
+    devices:
+      - ${ROBOT_PORT}:${ROBOT_PORT}
+    # Enable tty
+    tty: true
+    # Network mode
+    network_mode: host
+    ipc: host
+    # Override command
+    command: roslaunch phantomx_pincher_control driver.launch port:=${ROBOT_PORT}
