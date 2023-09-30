@@ -7,7 +7,7 @@ ci:
 exclude: \.(dae|stl|png)$
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.3.0
+    rev: v4.4.0
     hooks:
       - id: check-added-large-files
         args: ["--maxkb=2000"]
@@ -26,13 +26,13 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/pycqa/isort
-    rev: 5.10.1
+    rev: 5.12.0
     hooks:
       - id: isort
         args: ["--profile", "black"]
 
   - repo: https://github.com/psf/black
-    rev: 22.6.0
+    rev: 23.7.0
     hooks:
       - id: black
 
@@ -42,18 +42,19 @@ repos:
       - id: beautysh
 
   - repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.14
+    rev: 0.7.16
     hooks:
       - id: mdformat
 
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.1.0
+    rev: v2.2.5
     hooks:
       - id: codespell
         exclude: phantomx_pincher_arm_ikfast_plugin/src/phantomx_pincher_arm_ikfast_solver.cpp
+        args: ["--ignore-words-list", "pincher"]
 
   - repo: https://github.com/hadolint/hadolint
-    rev: v2.10.0
+    rev: v2.12.1-beta
     hooks:
       - id: hadolint-docker
         args: [--ignore, DL3008]
