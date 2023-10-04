@@ -1,6 +1,5 @@
 #!/usr/bin/env -S ros2 launch
 """Example of planning with MoveIt2 and executing motions on the real robot using ROS 1 controllers via ros1_bridge (both must be run externally)"""
-# TODO: Integrate with regular *_moveit_convig/launch/move_group.launch.py
 
 from os import path
 from typing import List
@@ -22,7 +21,6 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
-
     # Declare all launch arguments
     declared_arguments = generate_declared_arguments()
 
@@ -122,7 +120,7 @@ def generate_launch_description():
     # Servo
     servo_params = {
         "moveit_servo": load_yaml(
-            moveit_config_package, path.join("config", "servo.yaml")
+            moveit_config_package, path.join("config", "servo_real.yaml")
         )
     }
     servo_params["moveit_servo"].update({"use_gazebo": use_sim_time})
@@ -408,7 +406,7 @@ def generate_declared_arguments() -> List[DeclareLaunchArgument]:
         # Servo
         DeclareLaunchArgument(
             "enable_servo",
-            default_value="true",
+            default_value="false",
             description="Flag to enable MoveIt2 Servo for manipulator.",
         ),
         # Miscellaneous

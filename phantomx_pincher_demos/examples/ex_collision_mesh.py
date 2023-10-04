@@ -2,9 +2,9 @@
 """
 Example of adding and removing a collision object with a mesh geometry.
 Note: Python module `trimesh` is required for this example (`pip install trimesh`).
-`ros2 run phantomx_pincher_demos ex_collision_object.py --ros-args -p action:="add" -p position:="[0.25, 0.0, 0.1]" -p quat_xyzw:="[0.0, 0.0, -0.7071, 0.7071]"`
-`ros2 run phantomx_pincher_demos ex_collision_object.py --ros-args -p action:="add" -p filepath:="./my_favourity_mesh.stl"`
-`ros2 run phantomx_pincher_demos ex_collision_object.py --ros-args -p action:="remove"`
+- ros2 run phantomx_pincher_demos ex_collision_mesh.py --ros-args -p position:="[0.25, 0.0, 0.1]" -p quat_xyzw:="[0.0, 0.0, -0.7071, 0.7071]"
+- ros2 run phantomx_pincher_demos ex_collision_mesh.py --ros-args -p filepath:="./my_favourity_mesh.stl"
+- ros2 run phantomx_pincher_demos ex_collision_mesh.py --ros-args -p action:="remove"
 """
 
 from os import path
@@ -12,9 +12,9 @@ from threading import Thread
 
 import rclpy
 from pymoveit2 import MoveIt2
+from pymoveit2.robots import phantomx_pincher
 from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.node import Node
-from robots import phantomx_pincher
 
 DEFAULT_EXAMPLE_MESH = path.join(
     path.dirname(path.realpath(__file__)), "assets", "suzanne.stl"
@@ -22,11 +22,10 @@ DEFAULT_EXAMPLE_MESH = path.join(
 
 
 def main():
-
     rclpy.init()
 
     # Create node for this example
-    node = Node("ex_collision_object")
+    node = Node("ex_collision_mesh")
 
     # Declare parameter for joint positions
     node.declare_parameter(
@@ -51,13 +50,15 @@ def main():
         end_effector_name=phantomx_pincher.end_effector_name(),
         group_name=phantomx_pincher.MOVE_GROUP_ARM,
         callback_group=callback_group,
+        execute_via_moveit=True,
     )
 
-    # Spin the node in background thread(s)
+    # Spin the node in background thread(s) and wait a bit for initialization
     executor = rclpy.executors.MultiThreadedExecutor(2)
     executor.add_node(node)
     executor_thread = Thread(target=executor.spin, daemon=True, args=())
     executor_thread.start()
+    node.create_rate(1.0).sleep()
 
     # Get parameters
     filepath = node.get_parameter("filepath").get_parameter_value().string_value
@@ -77,7 +78,7 @@ def main():
         exit(1)
 
     # Determine ID of the collision mesh
-    mesh_id = path.basename(filepath).split(".")[0]
+    object_id = path.basename(filepath).split(".")[0]
 
     if "add" == action:
         # Add collision mesh
@@ -85,14 +86,18 @@ def main():
             f"Adding collision mesh '{filepath}' {{position: {list(position)}, quat_xyzw: {list(quat_xyzw)}}}"
         )
         moveit2.add_collision_mesh(
-            filepath=filepath, id=mesh_id, position=position, quat_xyzw=quat_xyzw
+            filepath=filepath,
+            id=object_id,
+            position=position,
+            quat_xyzw=quat_xyzw,
         )
     else:
         # Remove collision mesh
-        node.get_logger().info(f"Removing collision mesh with ID '{mesh_id}'")
-        moveit2.remove_collision_mesh(id=mesh_id)
+        node.get_logger().info(f"Removing collision mesh with ID '{object_id}'")
+        moveit2.remove_collision_object(id=object_id)
 
     rclpy.shutdown()
+    executor_thread.join()
     exit(0)
 
 

@@ -25,11 +25,11 @@ low_pass_filter_coeff: 1.05
 
 ## MoveIt properties
 move_group_name: arm # Often 'manipulator' or 'arm'
-planning_frame: phantomx_pincher_base_link # The MoveIt planning frame. Often 'base_link' or 'world'
+planning_frame: phantomx_pincher_arm_base_link # The MoveIt planning frame. Often 'arm_base_link' or 'world'
 
 ## Other frames
 ee_frame_name: phantomx_pincher_end_effector # The name of the end effector link, used to return the EE pose
-robot_link_command_frame: phantomx_pincher_base_link # commands must be given in the frame of a robot link. Usually either the base or end effector
+robot_link_command_frame: phantomx_pincher_arm_base_link # commands must be given in the frame of a robot link. Usually either the base or end effector
 
 ## Stopping behaviour
 incoming_command_timeout: 0.1 # Stop servoing if X seconds elapse without a new command
@@ -40,7 +40,7 @@ num_outgoing_halt_msgs_to_publish: 1
 ## Configure handling of singularities and joint limits
 lower_singularity_threshold: 150.0 # Start decelerating when the condition number hits this (close to singularity)
 hard_stop_singularity_threshold: 200.0 # Stop when the condition number hits this
-joint_limit_margin: 0.035 # added as a buffer to joint limits [radians]. If moving quickly, make this larger.
+joint_limit_margin: 0.01 # added as a buffer to joint limits [radians]. If moving quickly, make this larger.
 
 ## Topic names
 cartesian_command_in_topic: /delta_twist_cmds # Topic for incoming Cartesian twist commands

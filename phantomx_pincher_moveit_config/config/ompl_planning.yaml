@@ -158,4 +158,34 @@ arm:
     - SPARS
     - SPARStwo
     - TrajOpt
-  longest_valid_segment_fraction: 0.01
+  longest_valid_segment_fraction: 0.025
+gripper:
+  default_planner_config: RRTConnect
+  planner_configs:
+    - AnytimePathShortening
+    - SBL
+    - EST
+    - LBKPIECE
+    - BKPIECE
+    - KPIECE
+    - RRT
+    - RRTConnect
+    - RRTstar
+    - TRRT
+    - PRM
+    - PRMstar
+    - FMT
+    - BFMT
+    - PDST
+    - STRIDE
+    - BiTRRT
+    - LBTRRT
+    - BiEST
+    - ProjEST
+    - LazyPRM
+    - LazyPRMstar
+    - SPARS
+    - SPARStwo
+    - TrajOpt
+  projection_evaluator: joints(phantomx_pincher_gripper_finger1_joint,phantomx_pincher_gripper_finger2_joint)
+  longest_valid_segment_fraction: 0.1

@@ -8,6 +8,7 @@ SRDF_PATH="$(dirname "${SCRIPT_DIR}")/srdf/phantomx_pincher.srdf"
 # Arguments for xacro
 XACRO_ARGS=(
     name:=phantomx_pincher
+    use_real_gripper:=true
 )
 
 # Remove old SRDF file

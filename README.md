@@ -26,13 +26,18 @@ This repository consists of the following packages. For more detailed informatio
 - [**phantomx_pincher_demos**](./phantomx_pincher_demos) – Examples of using this repository
 - [**phantomx_pincher_description**](./phantomx_pincher_description) – URDF and SDF description of the robot
 - [**phantomx_pincher_moveit_config**](./phantomx_pincher_moveit_config) – MoveIt 2 configuration for the robot
-- [**phantomx_pincher_arm_ikfast_plugin**](./phantomx_pincher_arm_ikfast_plugin) – IKFast plugin for closed-form kinematics
+
+<p align="center" float="middle">
+  <img width="100%" src="https://github.com/snt-spacer/phantomx_pincher/assets/22929099/2e2b4bda-5271-4396-875b-299454754971"/>
+</p>
 
 ## Instructions
 
 ### Installation
 
 <details><summary><b>Option A – Local Installation</b></summary>
+
+> Note: This option does not support using the real robot. Real robot requires ROS 1 controller and `ros1_bridge` to be run at the same time. Please, see [Option B – Docker Installation](#-option-b--docker-installation) for more information.
 
 #### **Dependencies**
 
@@ -74,51 +79,60 @@ This enables:
 
 </details>
 
-<details><summary><b>Option B – Docker</b></summary>
+<details open><summary><b>Option B – Using Docker</b></summary>
 
-#### **Install Docker**
+### <a href="#-docker"><img src="https://www.svgrepo.com/show/448221/docker.svg" width="16" height="16"></a> Docker
 
-First, ensure your system has a setup for using Docker. You can follow the [`install_docker.bash`](./.docker/host/install_docker.bash) script.
+> To install [Docker](https://docs.docker.com/get-docker) on your system, you can run [`install_docker.bash`](.docker/host/install_docker.bash) to configure Docker with NVIDIA GPU support.
+>
+> ```bash
+> .docker/host/install_docker.bash
+> ```
 
-```bash
-# Execute script inside a cloned repository
-.docker/host/install_docker.bash
-# (Alternative) Execute script from URL
-bash -c "$(wget -qO - https://raw.githubusercontent.com/snt-spacer/phantomx_pincher/ros2/.docker/host/install_docker.bash)"
-```
+#### Build Image
 
-#### **(Optional) Build a New Image**
-
-A new Docker image can be built locally using the included [Dockerfile](./Dockerfile). To do this, you can run the [`build.bash`](./.docker/build.bash) script as shown below. This script will always print the corresponding low-level `docker build ...` command for your reference.
+To build a new Docker image from [Dockerfile](Dockerfile), you can run [`build.bash`](.docker/build.bash) as shown below.
 
 ```bash
-# Execute script inside a cloned repository
 .docker/build.bash ${TAG:-ros2} ${BUILD_ARGS}
 ```
 
-#### **Run a Docker Container**
+#### Run Container
 
-Docker containers can be run with the included [`run.bash`](./.docker/run.bash) script as shown below. It automatically configures environment variables and volumes to enable GPU usage and GUI application. This script will always print the corresponding low-level `docker run ...` command for your reference.
+To run the Docker container, you can use [`run.bash`](.docker/run.bash) as shown below.
 
 ```bash
-# Execute script inside a cloned repository
-.docker/run.bash ${TAG:-ros1} ${CMD}
-# (Alternative) Execute script from URL
-bash -c "$(wget -qO - https://raw.githubusercontent.com/snt-spacer/phantomx_pincher/ros2/.docker/run.bash)" -- ${TAG:-ros1} ${CMD}
+.docker/run.bash ${TAG:-ros2} ${CMD}
 ```
 
-For development, you can run the Docker container with the [`devel.bash`](./.docker/run.bash) script that also mounts the repository as a volume inside the container. In this way, you can modify all packages locally and directly execute them in their updated state inside the container.
+For convenience, additional three run scripts are available for directly using a fake (visual-only), simulated and real robot.
 
 ```bash
-# Execute script inside a cloned repository
-.docker/devel.bash ${TAG:-ros1} ${CMD}
+# Fake control inside RViz2
+.docker/run_visual.bash
+# Simulated control inside Gazebo
+.docker/run_sim.bash
+# Real control
+.docker/run_real.bash
+```
+
+#### Run Dev Container
+
+VS Code users familiar with [Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers) can modify the included [`devcontainer.json`](.devcontainer/devcontainer.json) to their needs.
+
+#### Join Container
+
+To join a running Docker container from another terminal, you can use [`join.bash`](.docker/join.bash) as shown below.
+
+```bash
+.docker/join.bash ${CMD:-bash}
 ```
 
 </details>
 
 ### Getting Started
 
-In order to get started, control a fake, simulated or real robot via the Motion Planning interface in RViz2.
+In order to get started, control a fake or simulated via the Motion Planning interface in RViz2.
 
 ```bash
 # Fake control inside RViz2
@@ -127,17 +141,4 @@ ros2 launch phantomx_pincher fake.launch.py
 ros2 launch phantomx_pincher gz.launch.py
 ```
 
-The control of the real robot with ROS 2 is accomplished via [`ros1_bridge`](https://github.com/ros2/ros1_bridge) using the ROS 1 controller from [`ros1` branch](https://github.com/snt-spacer/phantomx_pincher/tree/ros1) of this repository. The `ros1_bridge` must be run separately and bridge at least `/joint_states` topic and \[`/joint_trajectory_controller/follow_joint_trajectory`, `/gripper_action_controller/gripper_cmd`\] actions.
-
-```bash
-# ROS 1 (ros1 branch)
-roslaunch phantomx_pincher_control driver.launch
-# ROS 2 (this branch)
-ros2 launch phantomx_pincher real_with_ros1_controllers.launch.py
-```
-
-Hereafter, you can experiment with examples of `phantomx_pincher_demos`.
-
-```bash
-ros2 run phantomx_pincher_demos ...
-```
+The control of the real robot with ROS 2 is accomplished via [`ros1_bridge`](https://github.com/ros2/ros1_bridge) using the ROS 1 controller from [`ros1` branch](https://github.com/snt-spacer/phantomx_pincher/tree/ros1) of this repository. The `ros1_bridge` must be run separately and bridge at least `/joint_states` topic and \[`/joint_trajectory_controller/follow_joint_trajectory`, `/gripper_action_controller/gripper_cmd`\] actions. For convenience, [Docker Compose](./docker-compose.yml) setup that automatically runs everything needed to control the real robot is available. For simplicity, you can get started with the help of [`run_real.bash`](.docker/run_real.bash) script as already shown above.
