@@ -115,8 +115,7 @@ Visualization Manager:
       Tree:
         phantomx_pincher_base_link:
           phantomx_pincher_task_board_link:
-            phantomx_pincher_task_board_module_link:
-              {}
+            phantomx_pincher_task_board_module_link: {}
             phantomx_pincher_task_board_mount_link:
               phantomx_pincher_base_mount_link:
                 phantomx_pincher_arm_base_link:
@@ -339,7 +338,7 @@ Visualization Manager:
         Interactive Marker Size: 0.07500000298023224
         Joint Violation Color: 255; 0; 255
         Planning Group: arm
-        Query Goal State: true
+        Query Goal State: false
         Query Start State: false
         Show Workspace: false
         Start State Alpha: 0.5
