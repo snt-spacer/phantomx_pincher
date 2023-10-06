@@ -36,7 +36,7 @@ if [ "${IS_SUCCESS}" -eq 0 ]; then
     DOCKER_KILL_CMD=(
         ${WITH_SUDO} docker kill "${CONTAINER_NAME}"
     )
-    echo -e "\033[1;30m${DOCKER_KILL_CMD[*]}\033[0m" | xargs
+    echo -e "\033[1;90m${DOCKER_KILL_CMD[*]}\033[0m" | xargs
     # shellcheck disable=SC2048
     ${DOCKER_KILL_CMD[*]}
 fi

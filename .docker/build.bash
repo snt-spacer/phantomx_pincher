@@ -46,6 +46,6 @@ DOCKER_BUILD_CMD=(
     --tag "${IMAGE_NAME}"
     "${BUILD_ARGS}"
 )
-echo -e "\033[1;30m${DOCKER_BUILD_CMD[*]}\033[0m" | xargs
+echo -e "\033[1;90m${DOCKER_BUILD_CMD[*]}\033[0m" | xargs
 # shellcheck disable=SC2048
 exec ${DOCKER_BUILD_CMD[*]}

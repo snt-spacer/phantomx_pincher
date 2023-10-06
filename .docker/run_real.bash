@@ -32,7 +32,7 @@ DOCKER_COMPOSE_UP_CMD=(
     up
     "${DOCKER_COMPOSE_UP_OPTS}"
 )
-echo -e "\033[1;30m${DOCKER_COMPOSE_UP_CMD[*]}\033[0m" | xargs
+echo -e "\033[1;90m${DOCKER_COMPOSE_UP_CMD[*]}\033[0m" | xargs
 # shellcheck disable=SC2048
 ${DOCKER_COMPOSE_UP_CMD[*]}
 IS_SUCCESS=$?
@@ -48,7 +48,7 @@ if [ "${IS_SUCCESS}" -eq 0 ]; then
         --file "${COMPOSE_FILE}"
         down
     )
-    echo -e "\033[1;30m${DOCKER_COMPOSE_DOWN_CMD[*]}\033[0m" | xargs
+    echo -e "\033[1;90m${DOCKER_COMPOSE_DOWN_CMD[*]}\033[0m" | xargs
     # shellcheck disable=SC2048
     ${DOCKER_COMPOSE_DOWN_CMD[*]}
 fi

@@ -170,6 +170,6 @@ DOCKER_RUN_CMD=(
     "${IMAGE_NAME}"
     "${CMD}"
 )
-echo -e "\033[1;30m${DOCKER_RUN_CMD[*]}\033[0m" | xargs
+echo -e "\033[1;90m${DOCKER_RUN_CMD[*]}\033[0m" | xargs
 # shellcheck disable=SC2048
 exec ${DOCKER_RUN_CMD[*]}
