@@ -118,7 +118,11 @@ For convenience, additional three run scripts are available for directly using a
 
 #### Run Dev Container
 
-VS Code users familiar with [Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers) can modify the included [`devcontainer.json`](.devcontainer/devcontainer.json) to their needs.
+VS Code users familiar with [Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers) can modify the included [`devcontainer.json`](.devcontainer/devcontainer.json) to their needs. For convenience, [`open.bash`](.devcontainer/open.bash) script is available to open this repository as a Dev Container in VS Code.
+
+```bash
+.devcontainer/open.bash
+```
 
 #### Join Container
 
