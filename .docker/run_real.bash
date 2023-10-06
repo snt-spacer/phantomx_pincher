@@ -7,12 +7,16 @@ DOCKER_COMPOSE_UP_OPTS="${DOCKER_COMPOSE_UP_OPTS:-
 }"
 
 ## If the current user is not in the docker group, all docker commands will be run as root
+WITH_SUDO=""
 if ! grep -qi /etc/group -e "docker.*${USER}"; then
     echo "INFO: The current user ${USER} is not detected in the docker group. All docker commands will be run as root."
-    # shellcheck disable=all
-    docker-compose() {
-        sudo docker-compose "$@"
-    }
+    WITH_SUDO="sudo"
+fi
+
+## Determine the docker-compose command to use
+DOCKER_COMPOSE_CMD="docker-compose"
+if ! command -v ${DOCKER_COMPOSE_CMD} >/dev/null 2>&1; then
+    DOCKER_COMPOSE_CMD="docker compose"
 fi
 
 ## Get path to the compose file
@@ -21,8 +25,9 @@ REPOSITORY_DIR="$(dirname "${SCRIPT_DIR}")"
 COMPOSE_FILE="${REPOSITORY_DIR}/docker-compose.yml"
 
 ## Bring up all containers
+# shellcheck disable=SC2206
 DOCKER_COMPOSE_UP_CMD=(
-    docker-compose
+    ${WITH_SUDO} ${DOCKER_COMPOSE_CMD}
     --file "${COMPOSE_FILE}"
     up
     "${DOCKER_COMPOSE_UP_OPTS}"
@@ -37,8 +42,9 @@ if [ "${IS_SUCCESS}" -eq 0 ]; then
     "${SCRIPT_DIR}/join.bash"
 
     ## Once done with the interactive session, bring down all containers to clean up
+    # shellcheck disable=SC2206
     DOCKER_COMPOSE_DOWN_CMD=(
-        docker-compose
+        ${WITH_SUDO} ${DOCKER_COMPOSE_CMD}
         --file "${COMPOSE_FILE}"
         down
     )

@@ -29,17 +29,15 @@ CUSTOM_ENVS=(
 )
 
 ## If the current user is not in the docker group, all docker commands will be run as root
+WITH_SUDO=""
 if ! grep -qi /etc/group -e "docker.*${USER}"; then
     echo "INFO: The current user ${USER} is not detected in the docker group. All docker commands will be run as root."
-    # shellcheck disable=all
-    docker() {
-        sudo docker "$@"
-    }
+    WITH_SUDO="sudo"
 fi
 
 ## Determine the name of the image to run (automatically inferred from the current user and repository, or using the default if not available)
 # Get the current Docker Hub user or use the default
-DOCKERHUB_USER="$(docker info 2>/dev/null | sed '/Username:/!d;s/.* //')"
+DOCKERHUB_USER="$(${WITH_SUDO} docker info 2>/dev/null | sed '/Username:/!d;s/.* //')"
 DOCKERHUB_USER="${DOCKERHUB_USER:-${DEFAULT_DOCKERHUB_USER}}"
 # Get the name of the repository (directory) or use the default
 if [[ -f "${REPOSITORY_DIR}/Dockerfile" ]]; then
@@ -50,7 +48,7 @@ fi
 # Combine the user and repository name to form the image name
 IMAGE_NAME="${IMAGE_NAME:-"${DOCKERHUB_USER}/${REPOSITORY_NAME}"}"
 # Determine if such image exists (either locally or on Docker Hub), otherwise use the default image name
-if [[ -z "$(docker images -q "${IMAGE_NAME}" 2>/dev/null)" ]] || [[ -z "$(curl -fsSL "https://registry.hub.docker.com/v2/repositories/${IMAGE_NAME}" 2>/dev/null)" ]]; then
+if [[ -z "$(${WITH_SUDO} docker images -q "${IMAGE_NAME}" 2>/dev/null)" ]] || [[ -z "$(curl -fsSL "https://registry.hub.docker.com/v2/repositories/${IMAGE_NAME}" 2>/dev/null)" ]]; then
     IMAGE_NAME="${DEFAULT_DOCKERHUB_USER}/${DEFAULT_REPOSITORY_NAME}"
 fi
 
@@ -59,9 +57,9 @@ if [ -z "${CONTAINER_NAME}" ]; then
     # Select the container name based on the image name
     CONTAINER_NAME="${IMAGE_NAME##*/}"
     # If the container name is already in use, append a unique (incremental) numerical suffix
-    if docker container list --all --format "{{.Names}}" | grep -qi "${CONTAINER_NAME}"; then
+    if ${WITH_SUDO} docker container list --all --format "{{.Names}}" | grep -qi "${CONTAINER_NAME}"; then
         CONTAINER_NAME="${CONTAINER_NAME}1"
-        while docker container list --all --format "{{.Names}}" | grep -qi "${CONTAINER_NAME}"; do
+        while ${WITH_SUDO} docker container list --all --format "{{.Names}}" | grep -qi "${CONTAINER_NAME}"; do
             CONTAINER_NAME="${CONTAINER_NAME%?}$((${CONTAINER_NAME: -1} + 1))"
         done
     fi
@@ -83,7 +81,7 @@ shift "$((OPTIND - 1))"
 
 ## Parse TAG and CMD positional arguments
 if [ "${#}" -gt "0" ]; then
-    if [[ $(docker images --format "{{.Tag}}" "${IMAGE_NAME}") =~ (^|[[:space:]])${1}($|[[:space:]]) || $(curl -fsSL "https://registry.hub.docker.com/v2/repositories/${IMAGE_NAME}/tags" 2>/dev/null | grep -Poe '(?<=(\"name\":\")).*?(?=\")') =~ (^|[[:space:]])${1}($|[[:space:]]) ]]; then
+    if [[ $(${WITH_SUDO} docker images --format "{{.Tag}}" "${IMAGE_NAME}") =~ (^|[[:space:]])${1}($|[[:space:]]) || $(curl -fsSL "https://registry.hub.docker.com/v2/repositories/${IMAGE_NAME}/tags" 2>/dev/null | grep -Poe '(?<=(\"name\":\")).*?(?=\")') =~ (^|[[:space:]])${1}($|[[:space:]]) ]]; then
         # Use the first argument as a tag is such tag exists either locally or on the remote registry
         IMAGE_NAME="${IMAGE_NAME}:${1}"
         CMD=${*:2}
@@ -117,7 +115,7 @@ if [[ "${ENABLE_GPU,,}" = true ]]; then
     }
     if check_nvidia_gpu; then
         # Enable GPU either via NVIDIA Container Toolkit or NVIDIA Docker (depending on Docker version)
-        DOCKER_VERSION="$(docker version --format '{{.Server.Version}}')"
+        DOCKER_VERSION="$(${WITH_SUDO} docker version --format '{{.Server.Version}}')"
         MIN_VERSION_FOR_TOOLKIT="19.3"
         if [ "$(printf '%s\n' "${MIN_VERSION_FOR_TOOLKIT}" "${DOCKER_VERSION}" | sort -V | head -n1)" = "$MIN_VERSION_FOR_TOOLKIT" ]; then
             GPU_OPT="--gpus all"
@@ -159,8 +157,9 @@ if [[ "${ENABLE_GUI,,}" = true ]]; then
 fi
 
 ## Run the container
+# shellcheck disable=SC2206
 DOCKER_RUN_CMD=(
-    docker run
+    ${WITH_SUDO} docker run
     "${DOCKER_RUN_OPTS}"
     "${GPU_OPT}"
     "${GPU_ENVS[@]/#/"--env "}"
