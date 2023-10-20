@@ -35,13 +35,6 @@ services:
     # Network mode
     network_mode: host
     ipc: host
-    # NVIDIA GPU
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              capabilities: [gpu]
     command: ros2 launch phantomx_pincher_moveit_config move_group_external_control.launch.py
     depends_on:
       - ros1_bridge
