@@ -20,9 +20,6 @@ services:
       # GUI (X11)
       DISPLAY: ${DISPLAY}
       XAUTHORITY: ${XAUTHORITY}
-      # NVIDIA GPU
-      NVIDIA_VISIBLE_DEVICES: all
-      NVIDIA_DRIVER_CAPABILITIES: all
       # Isolate ROS 2 communication
       ROS_LOCALHOST_ONLY: 1
     # Other GPUs
