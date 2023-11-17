@@ -11,8 +11,6 @@
 		// Network mode
 		"--network=host",
 		"--ipc=host",
-		// NVIDIA GPU
-		"--gpus=all",
 		// Other GPUs
 		"--device=/dev/dri:/dev/dri",
 		"--group-add=video"
@@ -31,9 +29,6 @@
 		// GUI (X11)
 		"DISPLAY": "${localEnv:DISPLAY}",
 		"XAUTHORITY": "${localEnv:TMPDIR:/tmp}/xauth_docker_vsc_${localWorkspaceFolderBasename}",
-		// NVIDIA GPU
-		"NVIDIA_VISIBLE_DEVICES": "all",
-		"NVIDIA_DRIVER_CAPABILITIES": "all",
 		// Isolate ROS 2 communication
 		"ROS_LOCALHOST_ONLY": "1"
 	},
