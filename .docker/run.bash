@@ -49,7 +49,7 @@ fi
 IMAGE_NAME="${IMAGE_NAME:-"${DOCKERHUB_USER}/${REPOSITORY_NAME}"}"
 # Determine if such image exists (either locally or on Docker Hub), otherwise use the default image name
 if [[ -z "$(${WITH_SUDO} docker images -q "${IMAGE_NAME}" 2>/dev/null)" ]] || [[ -z "$(curl -fsSL "https://registry.hub.docker.com/v2/repositories/${IMAGE_NAME}" 2>/dev/null)" ]]; then
-    IMAGE_NAME="${DEFAULT_DOCKERHUB_USER}/${DEFAULT_REPOSITORY_NAME}"
+    IMAGE_NAME="${DOCKERHUB_USER}/${DEFAULT_REPOSITORY_NAME}"
 fi
 
 ## Use the provided container name or generate a unique one
