@@ -118,18 +118,20 @@ if [[ "${ENABLE_GPU,,}" = true ]]; then
         DOCKER_VERSION="$(${WITH_SUDO} docker version --format '{{.Server.Version}}')"
         MIN_VERSION_FOR_TOOLKIT="19.3"
         if [ "$(printf '%s\n' "${MIN_VERSION_FOR_TOOLKIT}" "${DOCKER_VERSION}" | sort -V | head -n1)" = "$MIN_VERSION_FOR_TOOLKIT" ]; then
-            GPU_OPT="--gpus all"
+            DOCKER_RUN_OPTS+=" --gpus all"
         else
-            GPU_OPT="--runtime nvidia"
+            DOCKER_RUN_OPTS+=" --runtime nvidia"
         fi
-        GPU_ENVS=(
+        CUSTOM_ENVS+=(
             NVIDIA_VISIBLE_DEVICES="all"
             NVIDIA_DRIVER_CAPABILITIES="all"
         )
-    elif [[ $(getent group video) ]]; then
-        GPU_OPT="--device=/dev/dri:/dev/dri --group-add video"
-    else
-        GPU_OPT="--device=/dev/dri:/dev/dri"
+    fi
+    if [[ -e /dev/dri ]]; then
+        DOCKER_RUN_OPTS+=" --device=/dev/dri:/dev/dri"
+        if [[ $(getent group video) ]]; then
+            DOCKER_RUN_OPTS+=" --group-add video"
+        fi
     fi
 fi
 
@@ -161,8 +163,6 @@ fi
 DOCKER_RUN_CMD=(
     ${WITH_SUDO} docker run
     "${DOCKER_RUN_OPTS}"
-    "${GPU_OPT}"
-    "${GPU_ENVS[@]/#/"--env "}"
     "${GUI_VOLUMES[@]/#/"--volume "}"
     "${GUI_ENVS[@]/#/"--env "}"
     "${CUSTOM_VOLUMES[@]/#/"--volume "}"
