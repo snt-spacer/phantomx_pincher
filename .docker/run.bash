@@ -27,7 +27,7 @@ CUSTOM_VOLUMES=(
 # List of environment variables to set (can be updated by passing -e ENV=VALUE)
 CUSTOM_ENVS=(
     ROS_DOMAIN_ID="${ROS_DOMAIN_ID:-"0"}"
-    ROS_LOCALHOST_ONLY="${ROS_LOCALHOST_ONLY:-"1"}"
+    ROS_LOCALHOST_ONLY="1"
 )
 
 ## If the current user is not in the docker group, all docker commands will be run as root
